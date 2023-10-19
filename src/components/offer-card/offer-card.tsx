@@ -1,14 +1,19 @@
-import { Offer } from '../../utils';
+import { Link } from 'react-router-dom';
+import { Offer } from '../../types';
 
 type OfferCardProps = {
   offer: Offer;
 }
 
-function OfferCard({offer}: OfferCardProps): JSX.Element {
-  function getRating() {
-    return offer.rating * 100 / 5;
-  }
+function getRating(rating: number) {
+  return rating * 100 / 5;
+}
 
+function getLinkToOffer(id: number) {
+  return `/offer/${id}`;
+}
+
+function OfferCard({offer}: OfferCardProps): JSX.Element {
   return (
     <article className="cities__card place-card">
       {offer.isPremium && (
@@ -17,9 +22,9 @@ function OfferCard({offer}: OfferCardProps): JSX.Element {
         </div>
       )}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to={getLinkToOffer(offer.id)}>
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -36,7 +41,7 @@ function OfferCard({offer}: OfferCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: getRating()}}></span>
+            <span style={{width: getRating(offer.rating)}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
