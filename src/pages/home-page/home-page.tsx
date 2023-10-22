@@ -1,13 +1,9 @@
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types';
-import OfferCard from '../../components/offer-card/offer-card';
+import { OfferCardsProps } from '../../components/offer-cards/offer-cards';
 import Header from '../../components/header/header';
+import OfferCards from '../../components/offer-cards/offer-cards';
 
-export type HomePageProps = {
-  offers: Offer[];
-}
-
-function HomePage({offers}: HomePageProps): JSX.Element {
+function HomePage({offers}: OfferCardsProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -54,7 +50,7 @@ function HomePage({offers}: HomePageProps): JSX.Element {
           </section>
         </div>
         <div className="cities">
-          {offers.length &&
+          {offers.length > 0 &&
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
@@ -74,16 +70,14 @@ function HomePage({offers}: HomePageProps): JSX.Element {
                     <li className="places__option" tabIndex={0}>Top rated first</li>
                   </ul>
                 </form>
-                <div className="cities__places-list places__list tabs__content">
-                  {offers.map((offer) => <OfferCard offer={offer} key={offer.id} />)}
-                </div>
+                <OfferCards offers={offers}/>
               </section>
               <div className="cities__right-section">
                 <section className="cities__map map"></section>
               </div>
             </div>}
 
-          {!offers.length &&
+          {offers.length === 0 &&
             <div className="cities__places-container cities__places-container--empty container">
               <section className="cities__no-places">
                 <div className="cities__status-wrapper tabs__content">

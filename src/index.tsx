@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Offer } from './types';
 import { API_OFFERS_URL } from './api/api';
+import { favoritesOffers } from './mocks/favorites';
 import App from './components/app/app';
 
 const root = ReactDOM.createRoot(
@@ -15,6 +16,6 @@ const offers: Offer[] = await fetch(API_OFFERS_URL)
 
 root.render(
   <React.StrictMode>
-    <App offers={offers} />
+    <App offers={offers} favoritesOffers={favoritesOffers}/>
   </React.StrictMode>
 );
