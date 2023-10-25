@@ -34,3 +34,18 @@ export type Offer = {
   title: string;
   type: string;
 }
+
+export type User = {
+  avatarUrl: string;
+  id: number;
+  isPro: boolean;
+  name: string;
+}
+
+export type Comment = {
+  comment: string;
+  date: string;
+  id: number;
+  rating: 4;
+  user: User;
+}

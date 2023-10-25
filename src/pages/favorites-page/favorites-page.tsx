@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Offer } from '../../types';
 import Header from '../../components/header/header';
-import OfferCard from '../../components/offer-card/offer-card';
+import OfferCards from '../../components/offer-cards/offer-cards';
 
 type FavoritesPageProps = {
   favoritesOffers: Offer[];
@@ -29,7 +29,7 @@ function FavoritesPage({favoritesOffers}: FavoritesPageProps): JSX.Element {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {favoritesOffers.map((offer) => <OfferCard key={offer.id} offer={offer} cardType="favorite" />)}
+                  <OfferCards offers={favoritesOffers} cardType="favorite" />
                 </div>
               </li>
 
@@ -41,9 +41,7 @@ function FavoritesPage({favoritesOffers}: FavoritesPageProps): JSX.Element {
                     </a>
                   </div>
                 </div>
-                <div className="favorites__places">
-                  {favoritesOffers.map((offer) => <OfferCard key={offer.id} offer={offer} cardType="favorite" />)}
-                </div>
+                <OfferCards offers={favoritesOffers} cardType="favorite" />
               </li>
             </ul>
           </section>

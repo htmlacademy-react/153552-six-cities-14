@@ -8,9 +8,23 @@ import { Offer, City } from '../../types';
 export type MapProps = {
   offers: Offer[];
   activeOffer: Offer;
+  type: string;
+  isActiveOfferOrange?: boolean;
 }
 
-export default function Map({offers, activeOffer}: MapProps): JSX.Element {
+const defaultCustomIcon = leaflet.icon({
+  iconUrl: URL_MARKER_DEFAULT,
+  iconSize: [27, 39],
+  iconAnchor: [13, 39],
+});
+
+const currentCustomIcon = leaflet.icon({
+  iconUrl: URL_MARKER_ACTIVE,
+  iconSize: [27, 39],
+  iconAnchor: [13, 39],
+});
+
+export default function Map({offers, activeOffer, type, isActiveOfferOrange}: MapProps): JSX.Element {
   const firstOffer = activeOffer;
 
   const place: City = {
@@ -25,17 +39,7 @@ export default function Map({offers, activeOffer}: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, place);
 
-  const defaultCustomIcon = leaflet.icon({
-    iconUrl: URL_MARKER_DEFAULT,
-    iconSize: [27, 39],
-    iconAnchor: [13, 39],
-  });
-
-  const currentCustomIcon = leaflet.icon({
-    iconUrl: URL_MARKER_ACTIVE,
-    iconSize: [27, 39],
-    iconAnchor: [13, 39],
-  });
+  const currentIconType = isActiveOfferOrange ? currentCustomIcon : defaultCustomIcon;
 
   useEffect(() => {
     if (map) {
@@ -45,7 +49,7 @@ export default function Map({offers, activeOffer}: MapProps): JSX.Element {
           lat: offer.location.latitude,
           lng: offer.location.longitude,
         }, {
-          icon: (offer.id === activeOffer?.id) ? currentCustomIcon : defaultCustomIcon,
+          icon: (offer.id === activeOffer?.id) ? currentIconType : defaultCustomIcon,
         })
           .addTo(map);
       });
@@ -55,7 +59,7 @@ export default function Map({offers, activeOffer}: MapProps): JSX.Element {
   }, [map, offers, activeOffer]);
 
   return (
-    <section ref={mapRef} className="cities__map map">
+    <section ref={mapRef} className={`map ${type === 'city' ? 'cities__map' : 'offer__map'}`}>
     </section>
   );
 }
