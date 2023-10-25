@@ -71,10 +71,10 @@ function HomePage({offers}: HomePageProps): JSX.Element {
                     <li className="places__option" tabIndex={0}>Top rated first</li>
                   </ul>
                 </form>
-                <OfferCards offers={filteredOffers} handleActiveOffer={updateActiveOffer} />
+                <OfferCards offers={filteredOffers} handleActiveOffer={updateActiveOffer} cardType="city" />
               </section>
               <div className="cities__right-section">
-                <Map offers={filteredOffers} activeOffer={activeOffer} />
+                <Map offers={filteredOffers} activeOffer={activeOffer} type="city" isActiveOfferOrange />
               </div>
             </div>}
 

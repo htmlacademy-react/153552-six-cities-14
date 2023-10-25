@@ -1,15 +1,12 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { Offer } from '../../types';
+import { getRating } from '../../utils';
 
 type OfferCardProps = {
   offer: Offer;
   cardType?: string;
   updateActiveOffer?: (offer: Offer) => void;
-}
-
-function getRating(rating: number) {
-  return Math.round(rating * 100 / 5);
 }
 
 function getLinkToOffer(id: number) {
@@ -29,7 +26,8 @@ function OfferCard({offer, cardType, updateActiveOffer}: OfferCardProps): JSX.El
       className={
         `place-card 
         ${cardType === 'city' ? 'cities__card' : ''}
-        ${cardType === 'favorite' ? 'favorites__card' : ''}`
+        ${cardType === 'favorite' ? 'favorites__card' : ''}
+        ${cardType === 'near-places' ? 'near-places__card' : ''}`
       }
     >
       {offer.isPremium && (
@@ -37,7 +35,13 @@ function OfferCard({offer, cardType, updateActiveOffer}: OfferCardProps): JSX.El
           <span>Premium</span>
         </div>
       )}
-      <div className={`place-card__image-wrapper ${cardType === 'city' ? 'cities__image-wrapper' : ''} ${cardType === 'favorite' ? 'favorites__image-wrapper' : ''}`}>
+      <div className={
+        `place-card__image-wrapper 
+        ${cardType === 'city' ? 'cities__image-wrapper' : ''} 
+        ${cardType === 'favorite' ? 'favorites__image-wrapper' : ''}
+        ${cardType === 'near-places' ? 'near-places__image-wrapper' : ''}`
+      }
+      >
         <Link to={getLinkToOffer(offer.id)}>
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
         </Link>
