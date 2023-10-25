@@ -1,9 +1,43 @@
 import { Helmet } from 'react-helmet-async';
-import { OfferCardsProps } from '../../components/offer-cards/offer-cards';
+import { useState, useMemo } from 'react';
+import { Offer } from '../../types';
+import { Cities } from '../../const';
 import Header from '../../components/header/header';
+import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import OfferCards from '../../components/offer-cards/offer-cards';
+import Map from '../../components/map/map';
 
-function HomePage({offers}: OfferCardsProps): JSX.Element {
+export type HomePageProps = {
+  offers: Offer[];
+}
+
+function HomePage({offers}: HomePageProps): JSX.Element {
+  const filterOffers = (city: keyof typeof Cities) => offers.filter((offer: Offer) => offer.city.name === city);
+
+  const [ activeCity, setActiveCity ] = useState<keyof typeof Cities>(Cities.Paris);
+
+  const [ activeOffer, setActiveOffer ] = useState<Offer>(filterOffers(Cities.Paris)[0]);
+
+  const updateActiveCity = (city: keyof typeof Cities) => {
+    setActiveCity(city);
+    setActiveOffer(filterOffers(city)[0]);
+  };
+
+  const filteredOffers = useMemo(() => {
+    if (!offers.length) {
+      return [];
+    }
+
+    setActiveOffer(filterOffers(activeCity)[0]);
+
+    return filterOffers(activeCity);
+  }, [offers, activeCity]);
+
+
+  const updateActiveOffer = (value: Offer) => {
+    setActiveOffer(value);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -13,48 +47,15 @@ function HomePage({offers}: OfferCardsProps): JSX.Element {
 
       <main className={`page__main page__main--index ${!offers.length ? 'page__main--index-empty' : ''}`}>
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>
+        <CitiesTabs updateActiveCity={updateActiveCity} />
         <div className="cities">
-          {offers.length > 0 &&
+          {filteredOffers.length > 0 &&
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">312 places to stay in Amsterdam</b>
+                <b className="places__found">
+                  {filteredOffers.length} places to stay in {activeCity}
+                </b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
                   <span className="places__sorting-type" tabIndex={0}>
@@ -70,14 +71,14 @@ function HomePage({offers}: OfferCardsProps): JSX.Element {
                     <li className="places__option" tabIndex={0}>Top rated first</li>
                   </ul>
                 </form>
-                <OfferCards offers={offers}/>
+                <OfferCards offers={filteredOffers} handleActiveOffer={updateActiveOffer} />
               </section>
               <div className="cities__right-section">
-                <section className="cities__map map"></section>
+                <Map offers={filteredOffers} activeOffer={activeOffer} />
               </div>
             </div>}
 
-          {offers.length === 0 &&
+          {filteredOffers.length === 0 &&
             <div className="cities__places-container cities__places-container--empty container">
               <section className="cities__no-places">
                 <div className="cities__status-wrapper tabs__content">
