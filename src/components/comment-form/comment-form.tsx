@@ -9,11 +9,7 @@ export default function CommentForm(): JSX.Element {
 
   const handleFieldChange = (evt: React.ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = evt.target;
-    if (name === 'rating') {
-      setFormData({ ...formData, rating: Number(value) });
-    } else {
-      setFormData({ ...formData, comment: value });
-    }
+    setFormData({...formData, [name]: value});
   };
 
   const isFormValid = useMemo(
@@ -59,7 +55,7 @@ export default function CommentForm(): JSX.Element {
           </svg>
         </label>
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" onChange={handleFieldChange}></textarea>
+      <textarea className="reviews__textarea form__textarea" id="comment" name="comment" placeholder="Tell how was your stay, what you like and what can be improved" onChange={handleFieldChange}></textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
