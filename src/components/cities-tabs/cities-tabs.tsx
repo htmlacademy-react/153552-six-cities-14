@@ -1,20 +1,16 @@
-
-import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCity } from '../../store/city-data/selectors';
 import { Cities } from '../../const';
-
-type CitiesTabsProps = {
-  updateActiveCity: (city: keyof typeof Cities) => void;
-}
+import { updateCity } from '../../store/city-data/city-data';
 
 const cities = Object.keys(Cities);
 
-export default function CitiesTabs({updateActiveCity}: CitiesTabsProps): JSX.Element {
-  const [ activeCity, setActiveCity ] = useState<keyof typeof Cities>(Cities.Paris);
+export default function CitiesTabs(): JSX.Element {
+  const activeCity = useSelector(getCity);
+  const dispatch = useDispatch();
 
-  const handleCityClick = (evt: React.MouseEvent<HTMLAnchorElement, MouseEvent>, city: keyof typeof Cities) => {
-    evt.preventDefault();
-    setActiveCity(city);
-    updateActiveCity(city);
+  const handleCityClick = (city: keyof typeof Cities) => {
+    dispatch(updateCity(city));
   };
 
   return (
@@ -24,15 +20,14 @@ export default function CitiesTabs({updateActiveCity}: CitiesTabsProps): JSX.Ele
           {cities.map((city) =>
             (
               <li key={city} className="locations__item">
-                <a
-                  className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
-                  href="#"
-                  onClick={(evt) => {
-                    handleCityClick(evt, city as keyof typeof Cities);
+                <span
+                  className={`locations__item-link tabs__item is-clickable ${city === activeCity ? 'tabs__item--active' : ''}`}
+                  onClick={() => {
+                    handleCityClick(city as keyof typeof Cities);
                   }}
                 >
                   <span>{city}</span>
-                </a>
+                </span>
               </li>
             ))}
         </ul>

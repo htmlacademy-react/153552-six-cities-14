@@ -20,5 +20,12 @@ export enum Cities {
   Dusseldorf = 'Dusseldorf',
 }
 
-export const URL_MARKER_DEFAULT = 'src/static/pin.svg';
-export const URL_MARKER_ACTIVE = 'src/static/pin-active.svg';
+export const enum MarkersUrls {
+  Default = 'src/static/pin.svg',
+  Active = 'src/static/pin-active.svg',
+}
+
+export enum NameSpace {
+  Offers = 'OFFERS',
+  City = 'CITY',
+}

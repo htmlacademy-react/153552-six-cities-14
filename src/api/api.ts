@@ -1,4 +1,25 @@
-const API_BASE_URL = 'https://14.react.pages.academy/six-cities';
-export const API_GET_OFFERS_URL = `${API_BASE_URL}/offers`;
-export const API_GET_OFFER_URL = `${API_BASE_URL}/offers`;
-export const API_GET_COMMENTS_URL = `${API_BASE_URL}/comments`;
+import axios, { AxiosInstance, AxiosError } from 'axios';
+import { API_BASE_URL } from './urls';
+
+type DetailMessageType = {
+  type: string;
+  message: string;
+}
+
+const REQUEST_TIMEOUT = 5000;
+
+export const createAPI = (): AxiosInstance => {
+  const api = axios.create({
+    baseURL: API_BASE_URL,
+    timeout: REQUEST_TIMEOUT,
+  });
+
+  api.interceptors.response.use(
+    (response) => response,
+    (error: AxiosError<DetailMessageType>) => {
+      throw error;
+    }
+  );
+
+  return api;
+};

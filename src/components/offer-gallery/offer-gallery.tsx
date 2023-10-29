@@ -10,7 +10,7 @@ export default function OfferGallery({picsUrls}: OfferGalleryProps): JSX.Element
           <div key={picUrl} className="offer__image-wrapper">
             <img className="offer__image" src={picUrl} alt="Photo studio" />
           </div>
-        ))})
+        ))}
       </div>
     </div>
   );
