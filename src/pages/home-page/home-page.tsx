@@ -1,27 +1,22 @@
 import { Helmet } from 'react-helmet-async';
 import { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Offer } from '../../types';
 import { Cities } from '../../const';
+import { getOffers } from '../../store/offers-data/selectors';
+import { getCity } from '../../store/city-data/selectors';
 import Header from '../../components/header/header';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import OfferCards from '../../components/offer-cards/offer-cards';
 import Map from '../../components/map/map';
 
-export type HomePageProps = {
-  offers: Offer[];
-}
+function HomePage(): JSX.Element {
+  const offers = useSelector(getOffers);
+  const activeCity = useSelector(getCity);
 
-function HomePage({offers}: HomePageProps): JSX.Element {
   const filterOffers = (city: keyof typeof Cities) => offers.filter((offer: Offer) => offer.city.name === city);
 
-  const [ activeCity, setActiveCity ] = useState<keyof typeof Cities>(Cities.Paris);
-
   const [ activeOffer, setActiveOffer ] = useState<Offer>(filterOffers(Cities.Paris)[0]);
-
-  const updateActiveCity = (city: keyof typeof Cities) => {
-    setActiveCity(city);
-    setActiveOffer(filterOffers(city)[0]);
-  };
 
   const filteredOffers = useMemo(() => {
     if (!offers.length) {
@@ -47,7 +42,7 @@ function HomePage({offers}: HomePageProps): JSX.Element {
 
       <main className={`page__main page__main--index ${!offers.length ? 'page__main--index-empty' : ''}`}>
         <h1 className="visually-hidden">Cities</h1>
-        <CitiesTabs updateActiveCity={updateActiveCity} />
+        <CitiesTabs />
         <div className="cities">
           {filteredOffers.length > 0 &&
             <div className="cities__places-container container">

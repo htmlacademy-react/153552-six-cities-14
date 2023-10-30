@@ -10,7 +10,6 @@ import OfferPage from '../../pages/offer-page/offer-page';
 import PrivateRoute from '../private-route/private-route';
 
 type AppProps = {
-  offers: Offer[];
   favoritesOffers: Offer[];
 }
 
@@ -21,7 +20,7 @@ function App(props: AppProps): JSX.Element {
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<HomePage {...props} />}
+            element={<HomePage />}
           />
           <Route
             path={AppRoute.Favorites}

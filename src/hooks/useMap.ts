@@ -8,7 +8,7 @@ function useMap(mapRef: React.MutableRefObject<null>, city: City) {
   const isRenderedRef = useRef(false);
 
   useEffect(() => {
-    if (mapRef.current !== null && !isRenderedRef.current) {
+    if (mapRef.current && !isRenderedRef.current) {
       const instance = leaflet.map(mapRef.current, {
         center: {
           lat: city.location.latitude,
