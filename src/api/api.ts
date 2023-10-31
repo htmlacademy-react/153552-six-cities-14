@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { API_BASE_URL } from './urls';
+import { apiUrls } from './urls';
 
 type DetailMessageType = {
   type: string;
@@ -10,7 +10,7 @@ const REQUEST_TIMEOUT = 5000;
 
 export const createAPI = (): AxiosInstance => {
   const api = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: apiUrls.BASE,
     timeout: REQUEST_TIMEOUT,
   });
 
