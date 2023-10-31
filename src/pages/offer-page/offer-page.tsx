@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Comment, Offer } from '../../types';
-import { API_GET_COMMENTS_URL, API_GET_OFFERS_URL } from '../../api/urls';
+import { apiUrls } from '../../api/urls';
 import { getRating, capitalizeFirstLetter } from '../../utils';
 import Header from '../../components/header/header';
 import CommentForm from '../../components/comment-form/comment-form';
@@ -22,7 +22,7 @@ function OfferPage(): JSX.Element {
   useEffect(() => {
     // @TODO переедет в Redux
     const fetchComments = async() => {
-      await fetch(`${API_GET_COMMENTS_URL}/${id}`)
+      await fetch(`${apiUrls.GET_COMMENTS}/${id}`)
         .then((res) => res.json())
         .then((res: Comment[]) => setComments(res));
     };
@@ -30,7 +30,7 @@ function OfferPage(): JSX.Element {
     fetchComments();
 
     const fetchOffer = async() => {
-      await fetch(`${API_GET_OFFERS_URL}/${id}`)
+      await fetch(`${apiUrls.GET_OFFERS}/${id}`)
         .then((res) => res.json())
         .then((res: Offer) => setOffer(res));
     };
@@ -38,7 +38,7 @@ function OfferPage(): JSX.Element {
     fetchOffer();
 
     const fetchOffersNearby = async() => {
-      await fetch(`${API_GET_OFFERS_URL}/${id}/nearby`)
+      await fetch(`${apiUrls.GET_OFFERS}/${id}/nearby`)
         .then((res) => res.json())
         .then((res: Offer[]) => setOffersNearby(res));
     };

@@ -29,3 +29,10 @@ export enum NameSpace {
   Offers = 'OFFERS',
   City = 'CITY',
 }
+
+export enum sortingOptions {
+  POPULAR = 'Popular',
+  PRICE_LOW_TO_HIGH = 'Price: low to high',
+  PRICE_HIGH_TO_LOW = 'Price: high to low',
+  TOP_RATED_FIRST = 'Top rated first',
+}
