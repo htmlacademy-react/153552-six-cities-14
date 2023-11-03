@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { sortingOptions } from '../../const';
+import { SortingOptions } from '../../const';
 
 type SortingProps = {
   handleSorting: (sortingOption: string) => void;
@@ -7,7 +7,7 @@ type SortingProps = {
 
 export default function Sorting({handleSorting}: SortingProps): JSX .Element {
   const [isOpened, setIsOpened] = useState(false);
-  const [activeOption, setActiveOption] = useState<string>(sortingOptions.POPULAR);
+  const [activeOption, setActiveOption] = useState<string>(SortingOptions.POPULAR);
 
   const toggleListVisibility = () => {
     setIsOpened(!isOpened);
@@ -31,7 +31,7 @@ export default function Sorting({handleSorting}: SortingProps): JSX .Element {
       <ul
         className={`places__options places__options--custom ${isOpened && 'places__options--opened'}`}
       >
-        {Object.values(sortingOptions).map((option: string) =>
+        {Object.values(SortingOptions).map((option: string) =>
           (
             <li
               tabIndex={0}

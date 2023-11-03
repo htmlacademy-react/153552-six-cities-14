@@ -5,20 +5,22 @@ export enum AppRoute {
   Offer = '/offer/'
 }
 
-export enum AutoriztionStatus {
+export enum AuthStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN'
 }
 
-export enum Cities {
-  Paris = 'Paris',
-  Cologne = 'Cologne',
-  Brussels = 'Brussels',
-  Amsterdam = 'Amsterdam',
-  Hamburg = 'Hamburg',
-  Dusseldorf = 'Dusseldorf',
-}
+export const Cities = [
+  'Paris',
+  'Cologne',
+  'Brussels',
+  'Amsterdam',
+  'Hamburg',
+  'Dusseldorf',
+] as const;
+
+export type CityName = typeof Cities[number];
 
 export const enum MarkersUrls {
   Default = 'src/static/pin.svg',
@@ -28,9 +30,11 @@ export const enum MarkersUrls {
 export enum NameSpace {
   Offers = 'OFFERS',
   City = 'CITY',
+  AuthorizationStatus = 'AUTORIZATION_STATUS',
+  User = 'USER',
 }
 
-export enum sortingOptions {
+export enum SortingOptions {
   POPULAR = 'Popular',
   PRICE_LOW_TO_HIGH = 'Price: low to high',
   PRICE_HIGH_TO_LOW = 'Price: high to low',
