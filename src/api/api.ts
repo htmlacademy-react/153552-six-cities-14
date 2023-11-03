@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { apiUrls } from './urls';
+import { getToken } from '../services/token';
 
 type DetailMessageType = {
   type: string;
@@ -14,9 +15,22 @@ export const createAPI = (): AxiosInstance => {
     timeout: REQUEST_TIMEOUT,
   });
 
+  api.interceptors.request.use(
+    (config) => {
+      const token = getToken();
+
+      if (token && config.headers) {
+        config.headers['x-token'] = token;
+      }
+
+      return config;
+    },
+  );
+
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError<DetailMessageType>) => {
+
       throw error;
     }
   );

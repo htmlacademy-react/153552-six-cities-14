@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Offer } from '../../types';
-import { Cities, sortingOptions } from '../../const';
+import { Cities, SortingOptions, CityName } from '../../const';
 import { getOffers } from '../../store/offers-data/selectors';
 import { getCity } from '../../store/city-data/selectors';
 import Header from '../../components/header/header';
@@ -15,11 +15,11 @@ function HomePage(): JSX.Element {
   const offers = useSelector(getOffers);
   const activeCity = useSelector(getCity);
 
-  const filterOffers = (city: keyof typeof Cities) => offers.filter((offer: Offer) => offer.city.name === city);
+  const filterOffers = (city: CityName) => offers.filter((offer: Offer) => offer.city.name === city);
 
-  const [ activeOffer, setActiveOffer ] = useState<Offer>(filterOffers(Cities.Paris)[0]);
+  const [ activeOffer, setActiveOffer ] = useState<Offer>(filterOffers(Cities[0])[0]);
 
-  const [activeOption, setActiveOption] = useState<string>(sortingOptions.POPULAR);
+  const [activeOption, setActiveOption] = useState<string>(SortingOptions.POPULAR);
 
   const updateSorting = (option: string) => {
     setActiveOption(option);
@@ -27,13 +27,13 @@ function HomePage(): JSX.Element {
 
   const sortOffers = (filteredOffers: Offer[]) => {
     switch (activeOption) {
-      case sortingOptions.POPULAR:
+      case SortingOptions.POPULAR:
         return filterOffers(activeCity);
-      case sortingOptions.PRICE_LOW_TO_HIGH:
+      case SortingOptions.PRICE_LOW_TO_HIGH:
         return filteredOffers.sort((a: Offer, b: Offer) => a.price - b.price);
-      case sortingOptions.PRICE_HIGH_TO_LOW:
+      case SortingOptions.PRICE_HIGH_TO_LOW:
         return filteredOffers.sort((a: Offer, b: Offer) => b.price - a.price);
-      case sortingOptions.TOP_RATED_FIRST:
+      case SortingOptions.TOP_RATED_FIRST:
         return filteredOffers.sort((a: Offer, b: Offer) => b.rating - a.rating);
       default:
         return filteredOffers;

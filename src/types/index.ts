@@ -49,3 +49,8 @@ export type Comment = {
   rating: 4;
   user: User;
 }
+
+export type AuthData = {
+  login: string;
+  password: string;
+};

@@ -1,6 +1,6 @@
 import { store } from '../store';
 import { Offer } from '.';
-import { Cities } from '../const';
+import { AuthStatus, CityName } from '../const';
 
 export type State = ReturnType<typeof store.getState>;
 
@@ -13,5 +13,18 @@ export type OffersData = {
 }
 
 export type CityData = {
-  city: keyof typeof Cities;
+  city: CityName;
+}
+
+export type AutorizationData = {
+  authorizationStatus: AuthStatus;
+};
+
+export type UserInfo = {
+  avatarUrl: string;
+  email: string;
+  id: number;
+  isPro: boolean;
+  name: string;
+  token: string;
 }
