@@ -40,3 +40,6 @@ export enum SortingOptions {
   PRICE_HIGH_TO_LOW = 'Price: high to low',
   TOP_RATED_FIRST = 'Top rated first',
 }
+
+export const ERROR_STATUS_CODE = 404;
+export const ERROR_ROUTE = '404';

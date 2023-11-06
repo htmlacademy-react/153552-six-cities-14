@@ -33,8 +33,6 @@ function useMap(mapRef: React.MutableRefObject<null>, city: City) {
   }, [mapRef, city]);
 
   return map;
-
-  return map;
 }
 
 export default useMap;

@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State, UserInfo } from '../types/state';
 import { Offer, AuthData } from '../types';
-import { apiUrls } from '../api/urls';
+import { ApiUrl } from '../api/urls';
 import { saveToken, dropToken } from '../services/token';
 import { redirectToRoute } from './actions';
 import { AppRoute } from '../const';
@@ -15,7 +15,7 @@ export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
 }>(
   'offers/fetchOffers',
   async (_arg, {extra: api}) => {
-    const { data } = await api.get<Offer[]>(apiUrls.GET_OFFERS);
+    const { data } = await api.get<Offer[]>(ApiUrl.GET_OFFERS);
     return data;
   },
 );
@@ -27,7 +27,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
 }>(
   'user/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
-    const { data } = await api.get<UserInfo | null>(apiUrls.LOGIN);
+    const { data } = await api.get<UserInfo | null>(ApiUrl.LOGIN);
     if (data) {
       dispatch(updateUserInfo(data));
     }
@@ -41,10 +41,10 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    const {data} = await api.post<UserInfo>(apiUrls.LOGIN, {email, password});
-    saveToken(data.token);
-    dispatch(redirectToRoute(AppRoute.Favorites));
+    const {data} = await api.post<UserInfo>(ApiUrl.LOGIN, {email, password});
     if (data) {
+      saveToken(data.token);
+      dispatch(redirectToRoute(AppRoute.Favorites));
       dispatch(updateUserInfo(data));
     }
   },
@@ -57,7 +57,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
 }>(
   'user/logout',
   async (_arg, {dispatch, extra: api}) => {
-    await api.delete(apiUrls.LOGOUT);
+    await api.delete(ApiUrl.LOGOUT);
     dropToken();
     dispatch(updateUserInfo(null));
   },
