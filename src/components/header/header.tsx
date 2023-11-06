@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
 import { AppRoute, AuthStatus } from '../../const';
-import { store } from '../../store';
 import { logoutAction } from '../../store/api-actions';
 import { useSelector } from 'react-redux';
 import { getAuthorizationStatus } from '../../store/autorization-status-data/selectors';
@@ -10,8 +10,10 @@ export default function Header(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const userInfoData = useSelector(getUserInfo);
 
+  const dispatch = useAppDispatch();
+
   const handleLogout = () => {
-    store.dispatch(logoutAction());
+    dispatch(logoutAction());
   };
 
   return (

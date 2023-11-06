@@ -46,7 +46,7 @@ export type Comment = {
   comment: string;
   date: string;
   id: number;
-  rating: 4;
+  rating: number;
   user: User;
 }
 
@@ -54,3 +54,8 @@ export type AuthData = {
   login: string;
   password: string;
 };
+
+export type Review = {
+  comment: string;
+  rating: number;
+}
