@@ -56,7 +56,7 @@ export default function Map({offers, activeOffer, type, isActiveOfferOrange}: Ma
 
       map.setView([activeOffer.location.latitude, activeOffer.location.longitude], 13);
     }
-  }, [map, offers, activeOffer]);
+  }, [map, offers, activeOffer, currentIconType]);
 
   return (
     <section ref={mapRef} className={`map ${type === 'city' ? 'cities__map' : 'offer__map'}`}>

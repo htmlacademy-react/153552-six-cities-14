@@ -1,15 +1,30 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { ChangeEvent } from 'react';
+import { Review } from '../../types';
 
-export default function CommentForm(): JSX.Element {
-  const [formData, setFormData] = useState({
+type CommentFormProps = {
+  sendComment: (review: Review) => void;
+}
+
+export default function CommentForm({ sendComment }: CommentFormProps): JSX.Element {
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  const emptyReview: Review = {
     rating: 0,
     comment: '',
-  });
+  };
+
+  const [formData, setFormData] = useState(emptyReview);
 
   const handleFieldChange = (evt: React.ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = evt.target;
     setFormData({...formData, [name]: value});
+  };
+
+  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    sendComment(formData);
+    setFormData(emptyReview);
   };
 
   const isFormValid = useMemo(
@@ -17,7 +32,14 @@ export default function CommentForm(): JSX.Element {
     [formData]);
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form
+      ref={formRef}
+      className="reviews__form form"
+      action="#"
+      method="post"
+      id="create-course-form"
+      onSubmit={handleSubmit}
+    >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" onChange={handleFieldChange} />
@@ -55,7 +77,15 @@ export default function CommentForm(): JSX.Element {
           </svg>
         </label>
       </div>
-      <textarea className="reviews__textarea form__textarea" id="comment" name="comment" placeholder="Tell how was your stay, what you like and what can be improved" onChange={handleFieldChange}></textarea>
+      <textarea
+        value={formData.comment}
+        className="reviews__textarea form__textarea"
+        id="comment"
+        name="comment"
+        placeholder="Tell how was your stay, what you like and what can be improved"
+        onChange={handleFieldChange}
+      >
+      </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.

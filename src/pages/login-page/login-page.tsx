@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
-import { store } from '../../store';
+import { useAppDispatch } from '../../hooks';
 import { AppRoute } from '../../const';
 import { loginAction } from '../../store/api-actions';
 import { getAuthorizationStatus } from '../../store/autorization-status-data/selectors';
@@ -14,14 +14,15 @@ function LoginPage(): JSX.Element {
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const authorizationStatus = useSelector(getAuthorizationStatus);
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (loginRef.current !== null && passwordRef.current !== null && passwordRef.current.value.trim()) {
-      store.dispatch(loginAction({
+    if (loginRef.current && passwordRef.current && passwordRef.current.value.trim()) {
+      dispatch(loginAction({
         login: loginRef.current.value,
         password: passwordRef.current.value
       }));
@@ -37,11 +38,9 @@ function LoginPage(): JSX.Element {
       return;
     }
 
-    const re = /[0-9]/;
-    const re1 = /[a-z]/i;
-    const re2 = /[а-я]/i;
+    const re = /.*(\p{L}(?=.*\d)|\d(?=.*\p{L})).*/u;
 
-    const isValidForm = re.test(password) && (re1.test(password) || re2.test(password));
+    const isValidForm = re.test(password);
     setIsValid(isValidForm);
   };
 
@@ -72,7 +71,12 @@ function LoginPage(): JSX.Element {
         <div className="page__login-container container">
           <section className="login">
             <h1 className="login__title">Sign in</h1>
-            <form className="login__form form" action="#" method="post" onSubmit={(evt) => handleSubmit(evt)}>
+            <form
+              className="login__form form"
+              action="#"
+              method="post"
+              onSubmit={handleSubmit}
+            >
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
@@ -90,13 +94,20 @@ function LoginPage(): JSX.Element {
                 <input
                   ref={passwordRef}
                   className="login__input form__input"
-                  type="password" name="password"
+                  type="password"
+                  name="password"
                   placeholder="Password"
                   required
                   onInput={checkIsValid}
                 />
               </div>
-              <button className="login__submit form__submit button" type="submit" disabled={!isValid}>Sign in</button>
+              <button
+                className="login__submit form__submit button"
+                type="submit"
+                disabled={!isValid}
+              >
+                Sign in
+              </button>
             </form>
           </section>
           <section className="locations locations--login locations--current">

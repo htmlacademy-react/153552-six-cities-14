@@ -1,9 +1,14 @@
+import { AxiosError } from 'axios';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Comment, Offer } from '../../types';
-import { apiUrls } from '../../api/urls';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { createAPI } from '../../api/api';
+import { Comment, Offer, Review } from '../../types';
+import { ApiUrl } from '../../api/urls';
 import { getRating, capitalizeFirstLetter } from '../../utils';
+import { getAuthorizationStatus } from '../../store/autorization-status-data/selectors';
 import Header from '../../components/header/header';
 import CommentForm from '../../components/comment-form/comment-form';
 import CommentsList from '../../components/comments-list/comments-list';
@@ -12,39 +17,50 @@ import OfferCards from '../../components/offer-cards/offer-cards';
 import OfferGallery from '../../components/offer-gallery/offer-gallery';
 import OfferFeatures from '../../components/offer-features/offer-features';
 import OfferHost from '../../components/offer-host/offer-host';
+import { ERROR_STATUS_CODE, ERROR_ROUTE, AuthStatus } from '../../const';
 
 function OfferPage(): JSX.Element {
   const id = useParams()?.id;
   const [comments, setComments] = useState<Comment[]>([]);
   const [offer, setOffer] = useState<Offer | null>(null);
   const [offersNearby, setOffersNearby] = useState<Offer[]>([]);
+  const navigate = useNavigate();
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const api = createAPI();
+
+  const fetchComments = async() => {
+    const { data } = await api.get<Comment[]>(`${ApiUrl.GET_COMMENTS}/${id}`);
+    setComments(data);
+  };
+
+  const fetchOffersNearby = async() => {
+    const { data } = await api.get<Offer[]>(`${ApiUrl.GET_OFFERS}/${id}/nearby`);
+    setOffersNearby(data);
+  };
+
+  const fetchOffer = async() => {
+    try {
+      const res = await api.get<Offer>(`${ApiUrl.GET_OFFERS}/${id}`);
+      setOffer(res.data);
+      fetchComments();
+      fetchOffersNearby();
+    } catch (err: unknown) {
+      if (err instanceof AxiosError && err?.response?.status === ERROR_STATUS_CODE) {
+        navigate(ERROR_ROUTE);
+      }
+    }
+  };
 
   useEffect(() => {
-    // @TODO переедет в Redux
-    const fetchComments = async() => {
-      await fetch(`${apiUrls.GET_COMMENTS}/${id}`)
-        .then((res) => res.json())
-        .then((res: Comment[]) => setComments(res));
-    };
-
-    fetchComments();
-
-    const fetchOffer = async() => {
-      await fetch(`${apiUrls.GET_OFFERS}/${id}`)
-        .then((res) => res.json())
-        .then((res: Offer) => setOffer(res));
-    };
-
     fetchOffer();
-
-    const fetchOffersNearby = async() => {
-      await fetch(`${apiUrls.GET_OFFERS}/${id}/nearby`)
-        .then((res) => res.json())
-        .then((res: Offer[]) => setOffersNearby(res));
-    };
-
-    fetchOffersNearby();
   }, [id]);
+
+  const sendComment = (comment: Review) => {
+    (async () => {
+      const { data } = await api.post<Comment[]>(`${ApiUrl.GET_COMMENTS}/${id}`, comment);
+      setComments(data);
+    })();
+  };
 
   return (
     <div className="page">
@@ -79,7 +95,9 @@ function OfferPage(): JSX.Element {
                   <span style={{width: getRating(offer.rating)}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">4.8</span>
+                <span className="offer__rating-value rating__value">
+                  {offer.rating}
+                </span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
@@ -113,7 +131,8 @@ function OfferPage(): JSX.Element {
                   </h2>
                 }
                 {comments.length > 0 && <CommentsList comments={comments} />}
-                <CommentForm />
+                {authorizationStatus === AuthStatus.Auth &&
+                  <CommentForm sendComment={sendComment} />}
               </section>
             </div>
           </div>
