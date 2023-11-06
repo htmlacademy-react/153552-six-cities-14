@@ -1,0 +1,11 @@
+.is-clickable {
+  cursor: pointer;
+}
+
+.places__sorting-type {
+  margin-left: 0.5rem;
+}
+
+.header__avatar-wrapper {
+  border-radius: 50%;
+}
