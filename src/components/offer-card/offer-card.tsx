@@ -1,24 +1,47 @@
-import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import { AppRoute, AuthStatus } from '../../const';
 import { Offer } from '../../types';
 import { getRating } from '../../utils';
+import { useSelector } from 'react-redux';
+import { getAuthorizationStatus } from '../../store/autorization-status-data/selectors';
+import { addFavoritesAction, removeFavoritesAction } from '../../store/api-actions';
 
 type OfferCardProps = {
   offer: Offer;
   cardType?: string;
   updateActiveOffer?: (offer: Offer) => void;
+  toggleFavoriteOffer: () => void;
 }
 
 function getLinkToOffer(id: number) {
   return `${AppRoute.Offer}${id}`;
 }
 
-function OfferCard({offer, cardType, updateActiveOffer}: OfferCardProps): JSX.Element {
+function OfferCard({offer, cardType, updateActiveOffer, toggleFavoriteOffer}: OfferCardProps): JSX.Element {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+
   function handleMouseHover(): void {
     if(updateActiveOffer) {
       updateActiveOffer(offer);
     }
   }
+
+  const toggleFavorite = async (favoriteOffer: Offer) => {
+    if (authorizationStatus !== AuthStatus.Auth) {
+      navigate(AppRoute.Login);
+    }
+
+    const { isFavorite } = favoriteOffer;
+    if (isFavorite) {
+      await dispatch(removeFavoritesAction(favoriteOffer));
+    } else {
+      await dispatch(addFavoritesAction(favoriteOffer));
+    }
+    toggleFavoriteOffer();
+  };
 
   return (
     <article
@@ -43,7 +66,11 @@ function OfferCard({offer, cardType, updateActiveOffer}: OfferCardProps): JSX.El
       }
       >
         <Link to={getLinkToOffer(offer.id)}>
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
+          <img
+            src={offer.previewImage}
+            alt="Place image"
+            className={`place-card__image ${cardType === 'favorite' ? 'favorites__image' : ''}`}
+          />
         </Link>
       </div>
       <div className={`place-card__info ${cardType === 'favorite' ? 'favorites__card-info' : ''}`}>
@@ -52,7 +79,13 @@ function OfferCard({offer, cardType, updateActiveOffer}: OfferCardProps): JSX.El
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button button ${offer.isFavorite ? 'place-card__bookmark-button--active' : ''}`} type="button">
+          <button
+            type="button"
+            className={`place-card__bookmark-button button ${offer.isFavorite ? 'place-card__bookmark-button--active' : ''}`}
+            onClick={ () => {
+              toggleFavorite(offer);
+            } }
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

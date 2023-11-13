@@ -20,6 +20,18 @@ export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   },
 );
 
+export const fetchFavoritesAction = createAsyncThunk<Offer[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'favorites/fetchFavorites',
+  async (_arg, {extra: api}) => {
+    const { data } = await api.get<Offer[]>(ApiUrl.FAVORITES);
+    return data;
+  },
+);
+
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;
@@ -30,6 +42,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
     const { data } = await api.get<UserInfo | null>(ApiUrl.LOGIN);
     if (data) {
       dispatch(updateUserInfo(data));
+      dispatch(fetchFavoritesAction());
     }
   },
 );
@@ -60,5 +73,31 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     await api.delete(ApiUrl.LOGOUT);
     dropToken();
     dispatch(updateUserInfo(null));
+  },
+);
+
+export const addFavoritesAction = createAsyncThunk<Offer, Offer, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'favorites/addFavorites',
+  async (favoriteOffer, {extra: api}) => {
+    const { id } = favoriteOffer;
+    const { data } = await api.post<Offer>(`${ApiUrl.FAVORITES}/${id}/1`);
+    return data;
+  },
+);
+
+export const removeFavoritesAction = createAsyncThunk<Offer, Offer, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'favorites/removeFavorites',
+  async (favoriteOffer, {extra: api}) => {
+    const { id } = favoriteOffer;
+    const { data } = await api.post<Offer>(`${ApiUrl.FAVORITES}/${id}/0`);
+    return data;
   },
 );

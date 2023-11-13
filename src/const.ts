@@ -32,6 +32,7 @@ export enum NameSpace {
   City = 'CITY',
   AuthorizationStatus = 'AUTORIZATION_STATUS',
   User = 'USER',
+  Favorites = 'FAVORITES',
 }
 
 export enum SortingOptions {

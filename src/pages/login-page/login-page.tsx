@@ -50,6 +50,12 @@ function LoginPage(): JSX.Element {
     }
   }, [authorizationStatus]);
 
+  useEffect(() => {
+    if (loginRef.current?.value && passwordRef.current?.value) {
+      checkIsValid();
+    }
+  }, []);
+
   return (
     <div className="page page--gray page--login">
       <Helmet>

@@ -7,6 +7,9 @@ import { useSelector } from 'react-redux';
 import { createAPI } from '../../api/api';
 import { Comment, Offer, Review } from '../../types';
 import { ApiUrl } from '../../api/urls';
+import { AppRoute } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { addFavoritesAction, removeFavoritesAction } from '../../store/api-actions';
 import { getRating, capitalizeFirstLetter } from '../../utils';
 import { getAuthorizationStatus } from '../../store/autorization-status-data/selectors';
 import Header from '../../components/header/header';
@@ -20,6 +23,7 @@ import OfferHost from '../../components/offer-host/offer-host';
 import { ERROR_STATUS_CODE, ERROR_ROUTE, AuthStatus } from '../../const';
 
 function OfferPage(): JSX.Element {
+  const dispatch = useAppDispatch();
   const id = useParams()?.id;
   const [comments, setComments] = useState<Comment[]>([]);
   const [offer, setOffer] = useState<Offer | null>(null);
@@ -55,11 +59,22 @@ function OfferPage(): JSX.Element {
     fetchOffer();
   }, [id]);
 
-  const sendComment = (comment: Review) => {
-    (async () => {
-      const { data } = await api.post<Comment[]>(`${ApiUrl.GET_COMMENTS}/${id}`, comment);
-      setComments(data);
-    })();
+  const sendComment = async (comment: Review) => {
+    await api.post<Comment[]>(`${ApiUrl.GET_COMMENTS}/${id}`, comment)
+      .then((data) => setComments(data.data));
+  };
+
+  const toggleFavorite = async (favoriteOffer: Offer) => {
+    if (authorizationStatus !== AuthStatus.Auth) {
+      navigate(AppRoute.Login);
+    }
+
+    const { isFavorite } = favoriteOffer;
+    if (isFavorite) {
+      await dispatch(removeFavoritesAction(favoriteOffer));
+    } else {
+      await dispatch(addFavoritesAction(favoriteOffer));
+    }
   };
 
   return (
@@ -83,7 +98,13 @@ function OfferPage(): JSX.Element {
                 <h1 className="offer__name">
                   {offer.title}
                 </h1>
-                <button className={`offer__bookmark-button button ${offer.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button">
+                <button
+                  className={`offer__bookmark-button button ${offer.isFavorite ? 'offer__bookmark-button--active' : ''}`}
+                  type="button"
+                  onClick={ () => {
+                    toggleFavorite(offer);
+                  }}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -141,7 +162,7 @@ function OfferPage(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            {offersNearby && <OfferCards offers={offersNearby} cardType="near-places" /> }
+            {offersNearby && <OfferCards offers={offersNearby} cardType="near-places" handleFavoriteToggling={fetchOffer}/> }
           </section>
         </div>
       </main>}

@@ -9,3 +9,13 @@
 .header__avatar-wrapper {
   border-radius: 50%;
 }
+
+.place-card__image {
+  width: 260px;
+  height: 200px;
+}
+
+.favorites__image {
+  width: 150px;
+  height: 110px;
+}

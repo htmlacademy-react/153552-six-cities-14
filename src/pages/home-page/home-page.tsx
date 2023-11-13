@@ -5,6 +5,8 @@ import { Offer } from '../../types';
 import { Cities, SortingOptions, CityName } from '../../const';
 import { getOffers } from '../../store/offers-data/selectors';
 import { getCity } from '../../store/city-data/selectors';
+import { useAppDispatch } from '../../hooks';
+import { fetchOffersAction } from '../../store/api-actions';
 import Header from '../../components/header/header';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import Sorting from '../../components/sorting/sorting';
@@ -12,6 +14,8 @@ import OfferCards from '../../components/offer-cards/offer-cards';
 import Map from '../../components/map/map';
 
 function HomePage(): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const offers = useSelector(getOffers);
   const activeCity = useSelector(getCity);
 
@@ -58,6 +62,10 @@ function HomePage(): JSX.Element {
     setActiveOffer(value);
   };
 
+  const updateOffers = () => {
+    dispatch(fetchOffersAction());
+  };
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -77,7 +85,7 @@ function HomePage(): JSX.Element {
                   {filteredAndSortedOffers.length} places to stay in {activeCity}
                 </b>
                 <Sorting handleSorting={updateSorting} />
-                <OfferCards offers={filteredAndSortedOffers} handleActiveOffer={updateActiveOffer} cardType="city" />
+                <OfferCards offers={filteredAndSortedOffers} handleActiveOffer={updateActiveOffer} cardType="city" handleFavoriteToggling={updateOffers} />
               </section>
               <div className="cities__right-section">
                 <Map offers={filteredAndSortedOffers} activeOffer={activeOffer} type="city" isActiveOfferOrange />
