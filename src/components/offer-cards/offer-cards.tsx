@@ -6,9 +6,10 @@ export type OfferCardsProps = {
   offers: Offer[];
   cardType: string;
   handleActiveOffer?: (offer: Offer) => void;
+  handleFavoriteToggling: () => void | Promise<void>;
 }
 
-function OfferCards({offers, cardType, handleActiveOffer}: OfferCardsProps): JSX.Element {
+function OfferCards({offers, cardType, handleActiveOffer, handleFavoriteToggling }: OfferCardsProps): JSX.Element {
   const [ , setActiveOffer ] = useState(offers?.[0]);
 
   const updateActiveOffer = (value: Offer) => {
@@ -18,6 +19,10 @@ function OfferCards({offers, cardType, handleActiveOffer}: OfferCardsProps): JSX
     }
   };
 
+  const toggleFavoriteOffer = () => {
+    handleFavoriteToggling();
+  };
+
   return (
     <div className={
       `${cardType === 'city' ? 'places__list tabs__content cities__places-list' : ''}
@@ -25,7 +30,7 @@ function OfferCards({offers, cardType, handleActiveOffer}: OfferCardsProps): JSX
       ${cardType === 'near-places' ? 'near-places__list places__list' : ''}`
     }
     >
-      {offers.map((offer) => <OfferCard cardType={cardType} offer={offer} key={offer.id} updateActiveOffer={updateActiveOffer} />)}
+      {offers.map((offer) => <OfferCard cardType={cardType} offer={offer} key={offer.id} updateActiveOffer={updateActiveOffer} toggleFavoriteOffer={toggleFavoriteOffer} />)}
     </div>
   );
 }

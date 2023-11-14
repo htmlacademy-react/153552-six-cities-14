@@ -4,4 +4,5 @@ export enum ApiUrl {
   GET_COMMENTS = `${ApiUrl.BASE}/comments`,
   LOGIN = `${ApiUrl.BASE}/login`,
   LOGOUT = `${ApiUrl.BASE}/logout`,
+  FAVORITES = `${ApiUrl.BASE}/favorite`,
 }

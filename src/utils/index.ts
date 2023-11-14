@@ -1,4 +1,4 @@
-export const getRating = (rating: number) => Math.round(rating * 100 / 5);
+export const getRating = (rating: number) => `${Math.round(rating) * 20}%`;
 
 export const getMonthYearDate = (date: string) => new Date(date).toLocaleString('en-US', { month: 'long', year: 'numeric' });
 

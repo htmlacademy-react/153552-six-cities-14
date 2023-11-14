@@ -28,3 +28,9 @@ export type UserInfo = {
   name: string;
   token: string;
 }
+
+export type FavoritesData = {
+  favoriteOffers: Offer[];
+  isLoading: boolean;
+  hasError: boolean;
+}

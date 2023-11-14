@@ -3,7 +3,7 @@ import { ChangeEvent } from 'react';
 import { Review } from '../../types';
 
 type CommentFormProps = {
-  sendComment: (review: Review) => void;
+  sendComment: (review: Review) => Promise<void>;
 }
 
 export default function CommentForm({ sendComment }: CommentFormProps): JSX.Element {

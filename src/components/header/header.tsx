@@ -5,10 +5,12 @@ import { logoutAction } from '../../store/api-actions';
 import { useSelector } from 'react-redux';
 import { getAuthorizationStatus } from '../../store/autorization-status-data/selectors';
 import { getUserInfo } from '../../store/user-data/selectors';
+import { getFavorites } from '../../store/favotites-data/selectors';
 
 export default function Header(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const userInfoData = useSelector(getUserInfo);
+  const favoritesInfo = useSelector(getFavorites);
 
   const dispatch = useAppDispatch();
 
@@ -39,7 +41,9 @@ export default function Header(): JSX.Element {
                       <span className="header__user-name user__name">
                         {userInfoData.email}
                       </span>
-                      <span className="header__favorite-count">3</span>
+                      <span className="header__favorite-count">
+                        {favoritesInfo.length}
+                      </span>
                     </Link>
                   </li>}
                 <li className="header__nav-item">
