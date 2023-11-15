@@ -1,5 +1,5 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {NameSpace} from '../../const';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { NameSpace } from '../../const';
 import { CityData } from '../../types/state';
 import { CityName } from '../../const';
 
