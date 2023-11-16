@@ -51,7 +51,7 @@ describe('Async actions', () => {
   });
 
   describe('fetchOffersAction', () => {
-    it('should dispatch "fetchQuestionsAction.pending", "fetchOffersAction.fulfilled", when server response 200', async() => {
+    it('should dispatch "fetchOffersAction.pending", "fetchOffersAction.fulfilled", when server response 200', async() => {
       const mockOffer = [makeFakeOffer()];
       mockAdapter.onGet(ApiUrl.GET_OFFERS).reply(200, mockOffer);
 
@@ -59,14 +59,14 @@ describe('Async actions', () => {
 
       const emittedActions = store.getActions();
       const extractedActionsTypes = extractActionsTypes(emittedActions);
-      const fetchQuestionsActionFulfilled = emittedActions.at(1) as ReturnType<typeof fetchOffersAction.fulfilled>;
+      const fetchActionFulfilled = emittedActions.at(1) as ReturnType<typeof fetchOffersAction.fulfilled>;
 
       expect(extractedActionsTypes).toEqual([
         fetchOffersAction.pending.type,
         fetchOffersAction.fulfilled.type,
       ]);
 
-      expect(fetchQuestionsActionFulfilled.payload)
+      expect(fetchActionFulfilled.payload)
         .toEqual(mockOffer);
     });
 
@@ -92,14 +92,14 @@ describe('Async actions', () => {
 
       const emittedActions = store.getActions();
       const extractedActionsTypes = extractActionsTypes(emittedActions);
-      const fetchQuestionsActionFulfilled = emittedActions.at(1) as ReturnType<typeof fetchFavoritesAction.fulfilled>;
+      const fetchActionFulfilled = emittedActions.at(1) as ReturnType<typeof fetchFavoritesAction.fulfilled>;
 
       expect(extractedActionsTypes).toEqual([
         fetchFavoritesAction.pending.type,
         fetchFavoritesAction.fulfilled.type,
       ]);
 
-      expect(fetchQuestionsActionFulfilled.payload)
+      expect(fetchActionFulfilled.payload)
         .toEqual(mockOffer);
     });
 
@@ -125,14 +125,14 @@ describe('Async actions', () => {
 
       const emittedActions = store.getActions();
       const extractedActionsTypes = extractActionsTypes(emittedActions);
-      const fetchQuestionsActionFulfilled = emittedActions.at(1) as ReturnType<typeof addFavoritesAction.fulfilled>;
+      const fetchActionFulfilled = emittedActions.at(1) as ReturnType<typeof addFavoritesAction.fulfilled>;
 
       expect(extractedActionsTypes).toEqual([
         addFavoritesAction.pending.type,
         addFavoritesAction.fulfilled.type,
       ]);
 
-      expect(fetchQuestionsActionFulfilled.payload)
+      expect(fetchActionFulfilled.payload)
         .toEqual(mockOffer);
     });
 
@@ -159,14 +159,14 @@ describe('Async actions', () => {
 
       const emittedActions = store.getActions();
       const extractedActionsTypes = extractActionsTypes(emittedActions);
-      const fetchQuestionsActionFulfilled = emittedActions.at(1) as ReturnType<typeof removeFavoritesAction.fulfilled>;
+      const fetchActionFulfilled = emittedActions.at(1) as ReturnType<typeof removeFavoritesAction.fulfilled>;
 
       expect(extractedActionsTypes).toEqual([
         removeFavoritesAction.pending.type,
         removeFavoritesAction.fulfilled.type,
       ]);
 
-      expect(fetchQuestionsActionFulfilled.payload)
+      expect(fetchActionFulfilled.payload)
         .toEqual(mockOffer);
     });
 

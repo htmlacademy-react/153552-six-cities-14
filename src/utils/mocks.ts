@@ -1,9 +1,9 @@
-import { name, internet, lorem, datatype, random, image } from 'faker';
+import { name, internet, lorem, datatype, random, image, date } from 'faker';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
-import { Offer, City, Location, Host, AuthData } from '../types';
+import { Offer, City, Location, User, AuthData, Comment } from '../types';
 import { UserInfo, State } from '../types/state';
-import { Cities } from '../const';
+import { AuthStatus, Cities } from '../const';
 import { createAPI } from '../api/api';
 
 export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>;
@@ -29,12 +29,12 @@ export const makeFakeCity = (): City => ({
   name: random.arrayElement(Cities)
 } as City);
 
-export const makeFakeHost = (): Host => ({
+export const makeFakeHost = (): User => ({
   avatarUrl: internet.avatar(),
   id: datatype.number({ min: 1, max: 100 }),
   isPro: datatype.boolean(),
   name: name.firstName(),
-} as Host);
+} as User);
 
 export const makeFakeOffer = (): Offer => ({
   bedrooms: datatype.number({ min: 1, max: 10 }),
@@ -72,3 +72,28 @@ export const makeFakeAuthData = (): AuthData => ({
   login: lorem.word(),
   password: internet.password(),
 } as AuthData);
+
+export const makeFakeComment = (): Comment => ({
+  comment: lorem.paragraph(),
+  date: new Date(date.recent()).toLocaleString(),
+  id: datatype.number({ min: 1, max: 100 }),
+  rating: datatype.number({ min: 1, max: 5, precision: 0.1 }),
+  user: makeFakeHost(),
+} as Comment);
+
+export const makeFakeStore = (initialState?: Partial<State>): State => ({
+  AUTORIZATION_STATUS: { authorizationStatus: AuthStatus.Unknown },
+  USER: { user: makeFakeUserInfo() },
+  CITY: { city: Cities[0] },
+  OFFERS: {
+    offers: [makeFakeOffer(), makeFakeOffer()],
+    isLoading: false,
+    hasError: false,
+  },
+  FAVORITES: {
+    favoriteOffers: [makeFakeOffer(), makeFakeOffer()],
+    isLoading: false,
+    hasError: false,
+  },
+  ...initialState ?? {},
+});

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 import { AppRoute } from '../../const';
@@ -15,34 +15,32 @@ function App(): JSX.Element {
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path={AppRoute.Main}
-            element={<HomePage />}
-          />
-          <Route
-            path={AppRoute.Favorites}
-            element={
-              <PrivateRoute authorizationStatus={authorizationStatus}>
-                <FavoritesPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoute.Login}
-            element={<LoginPage />}
-          />
-          <Route
-            path={`${AppRoute.Offer}:id`}
-            element={<OfferPage />}
-          />
-          <Route
-            path='*'
-            element={<ErrorPage />}
-          />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route
+          path={AppRoute.Main}
+          element={<HomePage />}
+        />
+        <Route
+          path={AppRoute.Favorites}
+          element={
+            <PrivateRoute authorizationStatus={authorizationStatus}>
+              <FavoritesPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={AppRoute.Login}
+          element={<LoginPage />}
+        />
+        <Route
+          path={`${AppRoute.Offer}:id`}
+          element={<OfferPage />}
+        />
+        <Route
+          path='*'
+          element={<ErrorPage />}
+        />
+      </Routes>
     </HelmetProvider>
   );
 }

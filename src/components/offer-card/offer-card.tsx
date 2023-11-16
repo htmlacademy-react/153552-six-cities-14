@@ -45,6 +45,7 @@ function OfferCard({offer, cardType, updateActiveOffer, toggleFavoriteOffer}: Of
 
   return (
     <article
+      data-testid="offer__card__id"
       onMouseOver={handleMouseHover}
       className={
         `place-card 
@@ -53,6 +54,7 @@ function OfferCard({offer, cardType, updateActiveOffer, toggleFavoriteOffer}: Of
         ${cardType === 'near-places' ? 'near-places__card' : ''}`
       }
     >
+      <div className="visually-hidden">Offer card</div>
       {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>

@@ -14,7 +14,7 @@ export default function CitiesTabs(): JSX.Element {
   return (
     <div className="tabs">
       <section className="locations container">
-        <ul className="locations__list tabs__list">
+        <ul className="locations__list tabs__list" data-testid="locations__list">
           {Cities.map((city) =>
             (
               <li key={city} className="locations__item">

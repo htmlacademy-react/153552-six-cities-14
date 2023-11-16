@@ -40,6 +40,7 @@ export default function CommentForm({ sendComment }: CommentFormProps): JSX.Elem
       id="create-course-form"
       onSubmit={handleSubmit}
     >
+      <div className="visually-hidden">Comment form</div>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" onChange={handleFieldChange} />
