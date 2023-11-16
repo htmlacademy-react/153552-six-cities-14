@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { makeFakeOffer } from '../../utils/mocks';
 import Map from './map';
 
-describe('Component: HeaderTabs', () => {
+describe('Component: Map', () => {
   it('should render correctly', () => {
     const mapId = 'map__id';
 

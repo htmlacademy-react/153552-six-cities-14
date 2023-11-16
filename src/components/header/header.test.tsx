@@ -3,7 +3,7 @@ import { withStore, withHistory } from '../../utils/mock-component';
 import { makeFakeStore } from '../../utils/mocks';
 import Header from './header';
 
-describe('Component: HeaderTabs', () => {
+describe('Component: Header', () => {
   it('should render correctly', () => {
     const fakeStore = makeFakeStore({});
     const { withStoreComponent } = withStore(withHistory(<Header />), fakeStore);

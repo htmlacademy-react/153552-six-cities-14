@@ -3,7 +3,7 @@ import { withStore, withHistory } from '../../utils/mock-component';
 import { makeFakeStore, makeFakeOffer } from '../../utils/mocks';
 import OfferCard from './offer-card';
 
-describe('Component: HeaderTabs', () => {
+describe('Component: OfferCard', () => {
   it('should render correctly', () => {
     const fakeOffer = makeFakeOffer();
     const fakeStore = makeFakeStore({});
