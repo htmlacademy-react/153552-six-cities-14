@@ -1,7 +1,13 @@
 import { name, internet, lorem, datatype, random, image } from 'faker';
+import { ThunkDispatch } from 'redux-thunk';
+import { Action } from 'redux';
 import { Offer, City, Location, Host, AuthData } from '../types';
-import { UserInfo } from '../types/state';
+import { UserInfo, State } from '../types/state';
 import { Cities } from '../const';
+import { createAPI } from '../api/api';
+
+export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>;
+export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({ type }) => type);
 
 export const makeFakeUserInfo = (): UserInfo => ({
   avatarUrl: internet.avatar(),

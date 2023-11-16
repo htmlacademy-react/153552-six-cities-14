@@ -7,7 +7,7 @@ const initialState: {user: UserInfo | null} = {
 };
 
 export const userInfoData = createSlice({
-  name: NameSpace.City,
+  name: NameSpace.User,
   initialState,
   reducers: {
     updateUserInfo: (state, action: PayloadAction<UserInfo | null>) => {

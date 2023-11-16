@@ -31,9 +31,17 @@ export const favoritesData = createSlice({
         state.favoriteOffers = [ ...state.favoriteOffers, action.payload];
         state.isLoading = false;
       })
+      .addCase(addFavoritesAction.rejected, (state) => {
+        state.isLoading = false;
+        state.hasError = true;
+      })
       .addCase(removeFavoritesAction.fulfilled, (state, action) => {
         const removingOfferIndex = state.favoriteOffers.findIndex((offer) => offer.id === action.payload.id);
         state.favoriteOffers.splice(removingOfferIndex, 1);
+      })
+      .addCase(removeFavoritesAction.rejected, (state) => {
+        state.isLoading = false;
+        state.hasError = true;
       });
   }
 });
