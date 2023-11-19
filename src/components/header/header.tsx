@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { getAuthorizationStatus } from '../../store/autorization-status-data/selectors';
 import { getUserInfo } from '../../store/user-data/selectors';
 import { getFavorites } from '../../store/favotites-data/selectors';
+import { updateUserInfo } from '../../store/user-data/user-data';
 
 export default function Header(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
@@ -16,17 +17,19 @@ export default function Header(): JSX.Element {
 
   const handleLogout = () => {
     dispatch(logoutAction());
+    dispatch(updateUserInfo(null));
   };
 
   return (
     <header className="header">
       <div className="container">
-        <div className="header__wrapper">
+        <div className="header__wrapper" data-testid="header__id">
           <div className="header__left">
             <Link to={AppRoute.Main} className="header__logo-link header__logo-link--active">
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
             </Link>
           </div>
+          <div className="visually-hidden">Header</div>
           {authorizationStatus === AuthStatus.Auth &&
             <nav className="header__nav">
               <ul className="header__nav-list">

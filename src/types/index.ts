@@ -9,19 +9,12 @@ export type City = {
   name: string;
 };
 
-export type Host = {
-  avatarUrl: string;
-  id: number;
-  isPro: boolean;
-  name: string;
-}
-
 export type Offer = {
   bedrooms: number;
   city: City;
   description: string;
   goods: string[];
-  host: Host;
+  host: User;
   id: number;
   images: string[];
   isFavorite: boolean;

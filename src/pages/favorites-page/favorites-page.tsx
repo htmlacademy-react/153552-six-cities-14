@@ -43,6 +43,7 @@ function FavoritesPage(): JSX.Element {
           ${favoritesOffers.length === 0 ? 'page__main--favorites-empty' : ''}`
         }
       >
+        <div className="visually-hidden">Favorites offers</div>
         <div className="page__favorites-container container">
           {favoritesOffers.length > 0 &&
             <section className="favorites">

@@ -69,10 +69,9 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   extra: AxiosInstance;
 }>(
   'user/logout',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     await api.delete(ApiUrl.LOGOUT);
     dropToken();
-    dispatch(updateUserInfo(null));
   },
 );
 

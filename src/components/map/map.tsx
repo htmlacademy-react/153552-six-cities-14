@@ -59,7 +59,7 @@ export default function Map({offers, activeOffer, type, isActiveOfferOrange}: Ma
   }, [map, offers, activeOffer, currentIconType]);
 
   return (
-    <section ref={mapRef} className={`map ${type === 'city' ? 'cities__map' : 'offer__map'}`}>
+    <section data-testid="map__id" ref={mapRef} className={`map ${type === 'city' ? 'cities__map' : 'offer__map'}`}>
     </section>
   );
 }

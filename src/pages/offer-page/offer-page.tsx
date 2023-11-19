@@ -84,6 +84,8 @@ function OfferPage(): JSX.Element {
       </Helmet>
       <Header />
 
+      <div className="visually-hidden">Offer info</div>
+
       {offer &&
       <main className="page__main page__main--offer">
         <section className="offer">

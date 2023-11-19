@@ -14,8 +14,11 @@ export default function CommentsList({comments}: CommentsListProps): JSX.Element
   }, [comments]);
 
   return (
-    <ul className="Comments__list">
-      {computedComments.map((comment) => <CommentItem key={comment.id} comment={comment}/>)}
-    </ul>
+    <>
+      <div className="visually-hidden">Comments list</div>
+      <ul className="Comments__list">
+        {computedComments.map((comment) => <CommentItem key={comment.id} comment={comment}/>)}
+      </ul>
+    </>
   );
 }

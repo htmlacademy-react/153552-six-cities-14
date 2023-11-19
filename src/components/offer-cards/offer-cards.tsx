@@ -24,11 +24,13 @@ function OfferCards({offers, cardType, handleActiveOffer, handleFavoriteToggling
   };
 
   return (
-    <div className={
-      `${cardType === 'city' ? 'places__list tabs__content cities__places-list' : ''}
-      ${cardType === 'favorite' ? 'favorites__places' : ''}
-      ${cardType === 'near-places' ? 'near-places__list places__list' : ''}`
-    }
+    <div
+      data-testid="cards__id"
+      className={
+        `${cardType === 'city' ? 'places__list tabs__content cities__places-list' : ''}
+        ${cardType === 'favorite' ? 'favorites__places' : ''}
+        ${cardType === 'near-places' ? 'near-places__list places__list' : ''}`
+      }
     >
       {offers.map((offer) => <OfferCard cardType={cardType} offer={offer} key={offer.id} updateActiveOffer={updateActiveOffer} toggleFavoriteOffer={toggleFavoriteOffer} />)}
     </div>
