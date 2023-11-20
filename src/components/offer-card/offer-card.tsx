@@ -11,6 +11,7 @@ type OfferCardProps = {
   offer: Offer;
   cardType?: string;
   updateActiveOffer?: (offer: Offer) => void;
+  clearHoveredOffer?: () => void;
   toggleFavoriteOffer: () => void;
 }
 
@@ -18,7 +19,7 @@ function getLinkToOffer(id: number) {
   return `${AppRoute.Offer}${id}`;
 }
 
-function OfferCard({offer, cardType, updateActiveOffer, toggleFavoriteOffer}: OfferCardProps): JSX.Element {
+function OfferCard({offer, cardType, updateActiveOffer, clearHoveredOffer, toggleFavoriteOffer}: OfferCardProps): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const authorizationStatus = useSelector(getAuthorizationStatus);
@@ -29,9 +30,16 @@ function OfferCard({offer, cardType, updateActiveOffer, toggleFavoriteOffer}: Of
     }
   }
 
+  function handleMouseOut(): void {
+    if(clearHoveredOffer) {
+      clearHoveredOffer();
+    }
+  }
+
   const toggleFavorite = async (favoriteOffer: Offer) => {
     if (authorizationStatus !== AuthStatus.Auth) {
       navigate(AppRoute.Login);
+      return;
     }
 
     const { isFavorite } = favoriteOffer;
@@ -47,6 +55,7 @@ function OfferCard({offer, cardType, updateActiveOffer, toggleFavoriteOffer}: Of
     <article
       data-testid="offer__card__id"
       onMouseOver={handleMouseHover}
+      onMouseOut={handleMouseOut}
       className={
         `place-card 
         ${cardType === 'city' ? 'cities__card' : ''}
@@ -67,13 +76,11 @@ function OfferCard({offer, cardType, updateActiveOffer, toggleFavoriteOffer}: Of
         ${cardType === 'near-places' ? 'near-places__image-wrapper' : ''}`
       }
       >
-        <Link to={getLinkToOffer(offer.id)}>
-          <img
-            src={offer.previewImage}
-            alt="Place image"
-            className={`place-card__image ${cardType === 'favorite' ? 'favorites__image' : ''}`}
-          />
-        </Link>
+        <img
+          src={offer.previewImage}
+          alt="Place image"
+          className={`place-card__image ${cardType === 'favorite' ? 'favorites__image' : ''}`}
+        />
       </div>
       <div className={`place-card__info ${cardType === 'favorite' ? 'favorites__card-info' : ''}`}>
         <div className="place-card__price-wrapper">

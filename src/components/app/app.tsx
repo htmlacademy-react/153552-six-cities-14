@@ -2,6 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 import { AppRoute } from '../../const';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import HomePage from '../../pages/home-page/home-page';
 import ErrorPage from '../../pages/error-page/error-page';
 import FavoritesPage from '../../pages/favorites-page/favorites-page';
@@ -41,6 +43,7 @@ function App(): JSX.Element {
           element={<ErrorPage />}
         />
       </Routes>
+      <ToastContainer />
     </HelmetProvider>
   );
 }

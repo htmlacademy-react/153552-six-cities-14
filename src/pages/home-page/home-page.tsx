@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Offer } from '../../types';
 import { Cities, SortingOptions, CityName } from '../../const';
@@ -20,11 +20,12 @@ function HomePage(): JSX.Element {
   const offers = useSelector(getOffers);
   const offersDataLoadingStatus = useSelector(getOffersDataLoadingStatus);
   const activeCity = useSelector(getCity);
+  const offersContainer = useRef<HTMLDivElement | null>(null);
 
   const filterOffers = (city: CityName) => offers.filter((offer: Offer) => offer.city.name === city);
 
-  const [ activeOffer, setActiveOffer ] = useState<Offer>(filterOffers(Cities[0])[0]);
-
+  const [activeOffer, setActiveOffer] = useState<Offer>(filterOffers(Cities[0])[0]);
+  const [hoveredOffer, setHoveredOffer] = useState<Offer | null>(null);
   const [activeOption, setActiveOption] = useState<string>(SortingOptions.POPULAR);
 
   const updateSorting = (option: string) => {
@@ -62,7 +63,10 @@ function HomePage(): JSX.Element {
 
   const updateActiveOffer = (value: Offer) => {
     setActiveOffer(value);
+    setHoveredOffer(value);
   };
+
+  const clearHoveredOffer = () => setHoveredOffer(null);
 
   const updateOffers = () => {
     dispatch(fetchOffersAction());
@@ -82,16 +86,22 @@ function HomePage(): JSX.Element {
           <div className="cities">
             {filteredAndSortedOffers.length > 0 &&
               <div className="cities__places-container container">
-                <section className="cities__places places">
+                <section ref={offersContainer} className="cities__places places">
                   <h2 className="visually-hidden">Places</h2>
                   <b className="places__found">
                     {filteredAndSortedOffers.length} places to stay in {activeCity}
                   </b>
                   <Sorting handleSorting={updateSorting} />
-                  <OfferCards offers={filteredAndSortedOffers} handleActiveOffer={updateActiveOffer} cardType="city" handleFavoriteToggling={updateOffers} />
+                  <OfferCards
+                    offers={filteredAndSortedOffers}
+                    cardType="city"
+                    handleActiveOffer={updateActiveOffer}
+                    removeHoveredOffer={clearHoveredOffer}
+                    handleFavoriteToggling={updateOffers}
+                  />
                 </section>
                 <div className="cities__right-section">
-                  <Map offers={filteredAndSortedOffers} activeOffer={activeOffer} type="city" isActiveOfferOrange />
+                  <Map offers={filteredAndSortedOffers} activeOffer={activeOffer} hoveredOffer={hoveredOffer} type="city" isActiveOfferOrange />
                 </div>
               </div>}
 

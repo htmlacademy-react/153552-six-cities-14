@@ -14,7 +14,7 @@ function FavoritesPage(): JSX.Element {
   const favoritesOffers = useSelector(getFavorites);
 
   const computedFavoriteOffers = useMemo(() => {
-    const offers: {[key: string]: Offer[]} = {};
+    const offers: Record<string, Offer[]> = {};
     favoritesOffers.forEach((offer: Offer) => {
       if (offers[offer.city.name] === undefined) {
         offers[offer.city.name] = [offer];

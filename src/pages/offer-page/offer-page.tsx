@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -28,6 +29,7 @@ function OfferPage(): JSX.Element {
   const [comments, setComments] = useState<Comment[]>([]);
   const [offer, setOffer] = useState<Offer | null>(null);
   const [offersNearby, setOffersNearby] = useState<Offer[]>([]);
+  const [isFormBlocked, setIsFormBlocked] = useState<boolean>(false);
   const navigate = useNavigate();
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const api = createAPI();
@@ -57,16 +59,32 @@ function OfferPage(): JSX.Element {
 
   useEffect(() => {
     fetchOffer();
+    window.scrollTo(0, 0);
   }, [id]);
 
   const sendComment = async (comment: Review) => {
-    await api.post<Comment[]>(`${ApiUrl.GET_COMMENTS}/${id}`, comment)
-      .then((data) => setComments(data.data));
+    setIsFormBlocked(true);
+    try {
+      await api.post<Comment[]>(`${ApiUrl.GET_COMMENTS}/${id}`, comment)
+      .then((data) => {
+        setComments(data.data);
+        setIsFormBlocked(false);
+      })
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        const errorText: string = error?.response?.data?.error
+        if (errorText) {
+          toast.error(errorText);
+        }
+      }
+      setIsFormBlocked(false);
+    }
   };
 
   const toggleFavorite = async (favoriteOffer: Offer) => {
     if (authorizationStatus !== AuthStatus.Auth) {
       navigate(AppRoute.Login);
+      return;
     }
 
     const { isFavorite } = favoriteOffer;
@@ -75,6 +93,7 @@ function OfferPage(): JSX.Element {
     } else {
       await dispatch(addFavoritesAction(favoriteOffer));
     }
+    fetchOffer();
   };
 
   return (
@@ -155,11 +174,11 @@ function OfferPage(): JSX.Element {
                 }
                 {comments.length > 0 && <CommentsList comments={comments} />}
                 {authorizationStatus === AuthStatus.Auth &&
-                  <CommentForm sendComment={sendComment} />}
+                  <CommentForm isBlocked={isFormBlocked} sendComment={sendComment} />}
               </section>
             </div>
           </div>
-          {offer && <Map offers={[...offersNearby, offer]} activeOffer={offer} type="offer"/>}
+          {offer && <Map offers={[...offersNearby, offer]} activeOffer={offer} type="offer" isActiveOfferOrange isOfferPage />}
         </section>
         <div className="container">
           <section className="near-places places">

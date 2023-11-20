@@ -3,10 +3,11 @@ import { ChangeEvent } from 'react';
 import { Review } from '../../types';
 
 type CommentFormProps = {
+  isBlocked: boolean;
   sendComment: (review: Review) => Promise<void>;
 }
 
-export default function CommentForm({ sendComment }: CommentFormProps): JSX.Element {
+export default function CommentForm({ isBlocked, sendComment }: CommentFormProps): JSX.Element {
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const emptyReview: Review = {
@@ -25,10 +26,14 @@ export default function CommentForm({ sendComment }: CommentFormProps): JSX.Elem
     evt.preventDefault();
     sendComment(formData);
     setFormData(emptyReview);
+    const ratingElement = document.getElementById(`${formData.rating}-star${formData.rating > 1 ? 's' : ''}`) as HTMLInputElement;
+    if (ratingElement) {
+      ratingElement.checked = false
+    }
   };
 
   const isFormValid = useMemo(
-    () => formData.rating > 0 && formData.comment.length >= 50,
+    () => formData.rating > 0 && formData.comment.length >= 50 && formData.comment.length <= 300,
     [formData]);
 
   return (
@@ -84,6 +89,7 @@ export default function CommentForm({ sendComment }: CommentFormProps): JSX.Elem
         id="comment"
         name="comment"
         placeholder="Tell how was your stay, what you like and what can be improved"
+        disabled={isBlocked}
         onChange={handleFieldChange}
       >
       </textarea>
