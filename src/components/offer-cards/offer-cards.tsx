@@ -24,7 +24,7 @@ function OfferCards({offers, cardType, handleActiveOffer, removeHoveredOffer, ha
     if (removeHoveredOffer) {
       removeHoveredOffer();
     }
-  }
+  };
 
   const toggleFavoriteOffer = () => {
     handleFavoriteToggling();

@@ -45,16 +45,14 @@ export default function Map({offers, activeOffer, hoveredOffer, isOfferPage, typ
 
   useEffect(() => {
     if (map) {
-      offers.forEach((offer, index) => {
-        if (index < 3) {
-          leaflet.marker({
-            lat: offer.location.latitude,
-            lng: offer.location.longitude,
-          }, {
-            icon: ((offer.id === activeOffer?.id) || (isOfferPage && offer.id === activeOffer?.id)) ? currentIconType : defaultCustomIcon,
-          })
-            .addTo(map);
-        }
+      offers.forEach((offer) => {
+        leaflet.marker({
+          lat: offer.location.latitude,
+          lng: offer.location.longitude,
+        }, {
+          icon: ((offer.id === hoveredOffer?.id) || (isOfferPage && offer.id === activeOffer?.id)) ? currentIconType : defaultCustomIcon,
+        })
+          .addTo(map);
       });
 
       map.setView([activeOffer.location.latitude, activeOffer.location.longitude], 13);

@@ -30,18 +30,23 @@ function OfferPage(): JSX.Element {
   const [offer, setOffer] = useState<Offer | null>(null);
   const [offersNearby, setOffersNearby] = useState<Offer[]>([]);
   const [isFormBlocked, setIsFormBlocked] = useState<boolean>(false);
+  const [isOfferLoading, setIsOfferLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const api = createAPI();
 
   const fetchComments = async() => {
+    setIsOfferLoading(true);
     const { data } = await api.get<Comment[]>(`${ApiUrl.GET_COMMENTS}/${id}`);
     setComments(data);
+    setIsOfferLoading(false);
   };
 
   const fetchOffersNearby = async() => {
+    setIsOfferLoading(true);
     const { data } = await api.get<Offer[]>(`${ApiUrl.GET_OFFERS}/${id}/nearby`);
     setOffersNearby(data);
+    setIsOfferLoading(false);
   };
 
   const fetchOffer = async() => {
@@ -66,13 +71,13 @@ function OfferPage(): JSX.Element {
     setIsFormBlocked(true);
     try {
       await api.post<Comment[]>(`${ApiUrl.GET_COMMENTS}/${id}`, comment)
-      .then((data) => {
-        setComments(data.data);
-        setIsFormBlocked(false);
-      })
+        .then((data) => {
+          setComments(data.data);
+          setIsFormBlocked(false);
+        });
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        const errorText: string = error?.response?.data?.error
+        const errorText: string = error?.message;
         if (errorText) {
           toast.error(errorText);
         }
@@ -178,7 +183,7 @@ function OfferPage(): JSX.Element {
               </section>
             </div>
           </div>
-          {offer && <Map offers={[...offersNearby, offer]} activeOffer={offer} type="offer" isActiveOfferOrange isOfferPage />}
+          {offer && !isOfferLoading && <Map offers={[...offersNearby, offer]} activeOffer={offer} type="offer" isActiveOfferOrange isOfferPage />}
         </section>
         <div className="container">
           <section className="near-places places">

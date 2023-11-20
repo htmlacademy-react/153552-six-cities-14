@@ -28,7 +28,7 @@ export default function CommentForm({ isBlocked, sendComment }: CommentFormProps
     setFormData(emptyReview);
     const ratingElement = document.getElementById(`${formData.rating}-star${formData.rating > 1 ? 's' : ''}`) as HTMLInputElement;
     if (ratingElement) {
-      ratingElement.checked = false
+      ratingElement.checked = false;
     }
   };
 

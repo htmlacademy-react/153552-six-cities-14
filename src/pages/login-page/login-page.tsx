@@ -14,7 +14,7 @@ function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const [isValid, setIsValid] = useState<boolean>(false);
-  const [activeCity, setActiveCity] = useState<CityName | null>(null)
+  const [activeCity, setActiveCity] = useState<CityName | null>(null);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
