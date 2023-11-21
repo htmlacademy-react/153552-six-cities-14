@@ -47,7 +47,9 @@ function LoginPage(): JSX.Element {
     setIsValid(isValidForm);
   };
 
-  const handleCityClick = () => {
+  const handleCityClick = (evt: React.MouseEvent) => {
+    evt.preventDefault();
+
     if (activeCity) {
       dispatch(updateCity(activeCity));
       navigate(AppRoute.Main);
@@ -129,7 +131,12 @@ function LoginPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" onClick={handleCityClick}>
+              <a
+                className="locations__item-link"
+                onClick={(evt) => {
+                  handleCityClick(evt);
+                }}
+              >
                 <span>{activeCity}</span>
               </a>
             </div>

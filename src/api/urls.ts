@@ -1,8 +1,8 @@
 export enum ApiUrl {
-  BASE = 'https://14.react.pages.academy/six-cities',
-  GET_OFFERS = `${ApiUrl.BASE}/offers`,
-  GET_COMMENTS = `${ApiUrl.BASE}/comments`,
-  LOGIN = `${ApiUrl.BASE}/login`,
-  LOGOUT = `${ApiUrl.BASE}/logout`,
-  FAVORITES = `${ApiUrl.BASE}/favorite`,
+  Base = 'https://14.react.pages.academy/six-cities',
+  GetOffers = `${ApiUrl.Base}/offers`,
+  GetComments = `${ApiUrl.Base}/comments`,
+  Login = `${ApiUrl.Base}/login`,
+  Logout = `${ApiUrl.Base}/logout`,
+  Favorites = `${ApiUrl.Base}/favorite`,
 }

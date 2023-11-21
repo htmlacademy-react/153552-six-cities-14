@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getCity } from '../../store/city-data/selectors';
-import { Cities, CityName } from '../../const';
+import { cities, CityName } from '../../const';
 import { updateCity } from '../../store/city-data/city-data';
 
 export default function CitiesTabs(): JSX.Element {
@@ -15,7 +15,7 @@ export default function CitiesTabs(): JSX.Element {
     <div className="tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list" data-testid="locations__list">
-          {Cities.map((city) =>
+          {cities.map((city) =>
             (
               <li key={city} className="locations__item">
                 <span

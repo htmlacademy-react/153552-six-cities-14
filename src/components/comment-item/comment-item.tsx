@@ -5,7 +5,7 @@ type CommentItemProps = {
   comment: Comment;
 }
 
-export default function CommentItem({comment}: CommentItemProps): JSX.Element {
+export default function CommentItem({ comment }: CommentItemProps): JSX.Element {
   return (
     <li className="reviews__item">
       <div className="reviews__user user">

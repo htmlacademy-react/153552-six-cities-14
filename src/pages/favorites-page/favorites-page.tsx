@@ -1,13 +1,14 @@
 import { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Offer } from '../../types';
 import { useAppDispatch } from '../../hooks';
+import { AppRoute } from '../../const';
 import { fetchFavoritesAction } from '../../store/api-actions';
+import { getFavorites } from '../../store/favotites-data/selectors';
 import Header from '../../components/header/header';
 import OfferCards from '../../components/offer-cards/offer-cards';
-import { getFavorites } from '../../store/favotites-data/selectors';
-
 
 function FavoritesPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -15,6 +16,7 @@ function FavoritesPage(): JSX.Element {
 
   const computedFavoriteOffers = useMemo(() => {
     const offers: Record<string, Offer[]> = {};
+
     favoritesOffers.forEach((offer: Offer) => {
       if (offers[offer.city.name] === undefined) {
         offers[offer.city.name] = [offer];
@@ -54,9 +56,9 @@ function FavoritesPage(): JSX.Element {
                     <li key={city} className="favorites__locations-items">
                       <div className="favorites__locations locations locations--current">
                         <div className="locations__item">
-                          <a className="locations__item-link" href="#">
+                          <span className="locations__item-link">
                             <span>{city}</span>
-                          </a>
+                          </span>
                         </div>
                       </div>
                       <div className="favorites__places">
@@ -78,9 +80,9 @@ function FavoritesPage(): JSX.Element {
         </div>
       </main>
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <Link to={AppRoute.Main} className="footer__logo-link">
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
-        </a>
+        </Link>
       </footer>
     </div>
   );

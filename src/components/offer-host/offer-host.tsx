@@ -4,7 +4,7 @@ type HostProps = {
   host: User;
 }
 
-export default function OfferHost({host}: HostProps): JSX.Element {
+export default function OfferHost({ host }: HostProps): JSX.Element {
   return (
     <>
       <h2 className="offer__host-title">Meet the host</h2>

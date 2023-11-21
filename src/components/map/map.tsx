@@ -1,9 +1,9 @@
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useRef, useEffect } from 'react';
-import useMap from '../../hoc/useMap';
-import { MarkersUrls } from '../../const';
+import { MarkerUrl } from '../../const';
 import { Offer, City } from '../../types';
+import useMap from '../../hooks/useMap';
 
 export type MapProps = {
   offers: Offer[];
@@ -15,18 +15,18 @@ export type MapProps = {
 }
 
 const defaultCustomIcon = leaflet.icon({
-  iconUrl: MarkersUrls.Default,
+  iconUrl: MarkerUrl.Default,
   iconSize: [27, 39],
   iconAnchor: [13, 39],
 });
 
 const currentCustomIcon = leaflet.icon({
-  iconUrl: MarkersUrls.Active,
+  iconUrl: MarkerUrl.Active,
   iconSize: [27, 39],
   iconAnchor: [13, 39],
 });
 
-export default function Map({offers, activeOffer, hoveredOffer, isOfferPage, type, isActiveOfferOrange }: MapProps): JSX.Element {
+export default function Map({ offers, activeOffer, hoveredOffer, isOfferPage, type, isActiveOfferOrange }: MapProps): JSX.Element {
   const firstOffer = activeOffer;
 
   const place: City = {
@@ -57,7 +57,7 @@ export default function Map({offers, activeOffer, hoveredOffer, isOfferPage, typ
 
       map.setView([activeOffer.location.latitude, activeOffer.location.longitude], 13);
     }
-  }, [map, offers, activeOffer, hoveredOffer, currentIconType]);
+  }, [map, offers, activeOffer, isOfferPage, hoveredOffer, currentIconType]);
 
   return (
     <section data-testid="map__id" ref={mapRef} className={`map ${type === 'city' ? 'cities__map' : 'offer__map'}`}>

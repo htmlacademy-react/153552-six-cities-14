@@ -1,12 +1,12 @@
 import axios, { AxiosInstance } from 'axios';
 import { ApiUrl } from './urls';
-import { getToken } from '../services/token';
+import { getToken } from '../token/token';
 
 const REQUEST_TIMEOUT = 5000;
 
-export const createAPI = (): AxiosInstance => {
+export const createApi = (): AxiosInstance => {
   const api = axios.create({
-    baseURL: ApiUrl.BASE,
+    baseURL: ApiUrl.Base,
     timeout: REQUEST_TIMEOUT,
   });
 

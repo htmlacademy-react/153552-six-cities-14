@@ -24,9 +24,12 @@ export default function CommentForm({ isBlocked, sendComment }: CommentFormProps
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+
     sendComment(formData);
     setFormData(emptyReview);
+
     const ratingElement = document.getElementById(`${formData.rating}-star${formData.rating > 1 ? 's' : ''}`) as HTMLInputElement;
+
     if (ratingElement) {
       ratingElement.checked = false;
     }

@@ -3,10 +3,10 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { Offer, City, Location, User, AuthData, Comment } from '../types';
 import { UserInfo, State } from '../types/state';
-import { AuthStatus, Cities } from '../const';
-import { createAPI } from '../api/api';
+import { AuthStatus, cities } from '../const';
+import { createApi } from '../api/api';
 
-export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>;
+export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createApi>, Action>;
 export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({ type }) => type);
 
 export const makeFakeUserInfo = (): UserInfo => ({
@@ -26,7 +26,7 @@ export const makeFakeLocation = (): Location => ({
 
 export const makeFakeCity = (): City => ({
   location: makeFakeLocation(),
-  name: random.arrayElement(Cities)
+  name: random.arrayElement(cities)
 } as City);
 
 export const makeFakeHost = (): User => ({
@@ -84,7 +84,7 @@ export const makeFakeComment = (): Comment => ({
 export const makeFakeStore = (initialState?: Partial<State>): State => ({
   AUTORIZATION_STATUS: { authorizationStatus: AuthStatus.Unknown },
   USER: { user: makeFakeUserInfo() },
-  CITY: { city: Cities[0] },
+  CITY: { city: cities[0] },
   OFFERS: {
     offers: [makeFakeOffer(), makeFakeOffer()],
     isLoading: false,

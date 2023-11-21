@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { createAPI } from '../../api/api';
+import { createApi } from '../../api/api';
 import { Comment, Offer, Review } from '../../types';
 import { ApiUrl } from '../../api/urls';
 import { AppRoute } from '../../const';
@@ -33,30 +33,30 @@ function OfferPage(): JSX.Element {
   const [isOfferLoading, setIsOfferLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const authorizationStatus = useSelector(getAuthorizationStatus);
-  const api = createAPI();
+  const api = createApi();
 
   const fetchComments = async() => {
     setIsOfferLoading(true);
-    const { data } = await api.get<Comment[]>(`${ApiUrl.GET_COMMENTS}/${id}`);
+    const { data } = await api.get<Comment[]>(`${ApiUrl.GetComments}/${id}`);
     setComments(data);
     setIsOfferLoading(false);
   };
 
   const fetchOffersNearby = async() => {
     setIsOfferLoading(true);
-    const { data } = await api.get<Offer[]>(`${ApiUrl.GET_OFFERS}/${id}/nearby`);
+    const { data } = await api.get<Offer[]>(`${ApiUrl.GetOffers}/${id}/nearby`);
     setOffersNearby(data);
     setIsOfferLoading(false);
   };
 
   const fetchOffer = async() => {
     try {
-      const res = await api.get<Offer>(`${ApiUrl.GET_OFFERS}/${id}`);
+      const res = await api.get<Offer>(`${ApiUrl.GetOffers}/${id}`);
       setOffer(res.data);
       fetchComments();
       fetchOffersNearby();
-    } catch (err: unknown) {
-      if (err instanceof AxiosError && err?.response?.status === ERROR_STATUS_CODE) {
+    } catch (error: unknown) {
+      if (error instanceof AxiosError && error?.response?.status === ERROR_STATUS_CODE) {
         navigate(ERROR_ROUTE);
       }
     }
@@ -70,7 +70,7 @@ function OfferPage(): JSX.Element {
   const sendComment = async (comment: Review) => {
     setIsFormBlocked(true);
     try {
-      await api.post<Comment[]>(`${ApiUrl.GET_COMMENTS}/${id}`, comment)
+      await api.post<Comment[]>(`${ApiUrl.GetComments}/${id}`, comment)
         .then((data) => {
           setComments(data.data);
           setIsFormBlocked(false);

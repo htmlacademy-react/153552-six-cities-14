@@ -19,7 +19,7 @@ function getLinkToOffer(id: number) {
   return `${AppRoute.Offer}${id}`;
 }
 
-function OfferCard({offer, cardType, updateActiveOffer, clearHoveredOffer, toggleFavoriteOffer}: OfferCardProps): JSX.Element {
+function OfferCard({ offer, cardType, updateActiveOffer, clearHoveredOffer, toggleFavoriteOffer }: OfferCardProps): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const authorizationStatus = useSelector(getAuthorizationStatus);

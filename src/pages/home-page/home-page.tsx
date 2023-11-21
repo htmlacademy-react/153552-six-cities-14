@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useState, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Offer } from '../../types';
-import { Cities, SortingOptions, CityName } from '../../const';
+import { cities, SortingOption, CityName } from '../../const';
 import { getOffers, getOffersDataLoadingStatus } from '../../store/offers-data/selectors';
 import { getCity } from '../../store/city-data/selectors';
 import { useAppDispatch } from '../../hooks';
@@ -24,9 +24,9 @@ function HomePage(): JSX.Element {
 
   const filterOffers = (city: CityName) => offers.filter((offer: Offer) => offer.city.name === city);
 
-  const [activeOffer, setActiveOffer] = useState<Offer>(filterOffers(Cities[0])[0]);
+  const [activeOffer, setActiveOffer] = useState<Offer>(filterOffers(cities[0])[0]);
   const [hoveredOffer, setHoveredOffer] = useState<Offer | null>(null);
-  const [activeOption, setActiveOption] = useState<string>(SortingOptions.POPULAR);
+  const [activeOption, setActiveOption] = useState<string>(SortingOption.Popular);
 
   const updateSorting = (option: string) => {
     setActiveOption(option);
@@ -34,13 +34,13 @@ function HomePage(): JSX.Element {
 
   const sortOffers = (filteredOffers: Offer[]) => {
     switch (activeOption) {
-      case SortingOptions.POPULAR:
+      case SortingOption.Popular:
         return filterOffers(activeCity);
-      case SortingOptions.PRICE_LOW_TO_HIGH:
+      case SortingOption.PriceLowToHigh:
         return filteredOffers.sort((a: Offer, b: Offer) => a.price - b.price);
-      case SortingOptions.PRICE_HIGH_TO_LOW:
+      case SortingOption.PriceHighToLow:
         return filteredOffers.sort((a: Offer, b: Offer) => b.price - a.price);
-      case SortingOptions.TOP_RATED_FIRST:
+      case SortingOption.TopRatedFirst:
         return filteredOffers.sort((a: Offer, b: Offer) => b.rating - a.rating);
       default:
         return filteredOffers;

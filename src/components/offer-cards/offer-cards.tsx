@@ -10,11 +10,12 @@ export type OfferCardsProps = {
   handleFavoriteToggling: () => void | Promise<void>;
 }
 
-function OfferCards({offers, cardType, handleActiveOffer, removeHoveredOffer, handleFavoriteToggling }: OfferCardsProps): JSX.Element {
+function OfferCards({ offers, cardType, handleActiveOffer, removeHoveredOffer, handleFavoriteToggling }: OfferCardsProps): JSX.Element {
   const [ , setActiveOffer ] = useState(offers?.[0]);
 
   const updateActiveOffer = (value: Offer) => {
     setActiveOffer(value);
+
     if (handleActiveOffer) {
       handleActiveOffer(value);
     }
