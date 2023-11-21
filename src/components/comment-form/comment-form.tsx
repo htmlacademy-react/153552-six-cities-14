@@ -3,7 +3,7 @@ import { ChangeEvent } from 'react';
 import { Review } from '../../types';
 
 type CommentFormProps = {
-  isBlocked: boolean;
+  isBlocked?: boolean;
   sendComment: (review: Review) => Promise<void>;
 }
 
