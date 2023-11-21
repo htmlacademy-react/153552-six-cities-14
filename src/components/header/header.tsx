@@ -35,19 +35,19 @@ export default function Header(): JSX.Element {
               <ul className="header__nav-list">
                 {userInfoData &&
                   <li className="header__nav-item user">
+                    <div
+                      style={{backgroundImage: `url(${userInfoData.avatarUrl})`}}
+                      className="header__avatar-wrapper user__avatar-wrapper"
+                    >
+                    </div>
                     <Link to={AppRoute.Favorites} className="header__nav-link header__nav-link--profile">
-                      <div
-                        style={{backgroundImage: `url(${userInfoData.avatarUrl})`}}
-                        className="header__avatar-wrapper user__avatar-wrapper"
-                      >
-                      </div>
                       <span className="header__user-name user__name">
                         {userInfoData.email}
                       </span>
-                      <span className="header__favorite-count">
-                        {favoritesInfo.length}
-                      </span>
                     </Link>
+                    <span className="header__favorite-count">
+                      {favoritesInfo.length}
+                    </span>
                   </li>}
                 <li className="header__nav-item">
                   <span className="header__nav-link is-clickable" onClick={handleLogout}>

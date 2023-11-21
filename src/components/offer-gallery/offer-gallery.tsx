@@ -2,7 +2,7 @@ type OfferGalleryProps = {
   picsUrls: string[];
 }
 
-export default function OfferGallery({picsUrls}: OfferGalleryProps): JSX.Element {
+export default function OfferGallery({ picsUrls }: OfferGalleryProps): JSX.Element {
   return (
     <div className="offer__gallery-container container">
       <div className="offer__gallery">

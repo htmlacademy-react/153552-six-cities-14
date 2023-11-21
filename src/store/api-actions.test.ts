@@ -2,31 +2,31 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import MockAdapter from 'axios-mock-adapter';
 import thunk from 'redux-thunk';
 import { Action } from 'redux';
-import { createAPI } from '../api/api';
+import { createApi } from '../api/api';
 import { ApiUrl } from '../api/urls';
-import { Cities } from '../const';
+import { cities } from '../const';
 import { State } from '../types/state';
 import { AuthData } from '../types';
 import { redirectToRoute } from './actions';
-import * as tokenStorage from '../services/token';
+import * as tokenStorage from '../token/token';
 import { updateUserInfo } from './user-data/user-data';
 import { checkAuthAction, fetchOffersAction, fetchFavoritesAction, addFavoritesAction, removeFavoritesAction, loginAction, logoutAction } from './api-actions';
 import { AppThunkDispatch, extractActionsTypes, makeFakeOffer } from '../utils/mocks';
 
 describe('Async actions', () => {
-  const axios = createAPI();
+  const axios = createApi();
   const mockAdapter = new MockAdapter(axios);
   const middleware = [thunk.withExtraArgument(axios)];
   const mockStoreCreator = configureMockStore<State, Action<string>, AppThunkDispatch>(middleware);
   let store: ReturnType<typeof mockStoreCreator>;
 
   beforeEach(() => {
-    store = mockStoreCreator({ OFFERS: { offers: [] }, FAVORITES: { favoriteOffers: [] }, USER: { user: null }, CITY: { city: Cities[0]}});
+    store = mockStoreCreator({ OFFERS: { offers: [] }, FAVORITES: { favoriteOffers: [] }, USER: { user: null }, CITY: { city: cities[0]}});
   });
 
   describe('checkAuthAction', () => {
     it('should dispatch "checkAuthAction.pending" and "checkAuthAction.fulfilled" with thunk "checkAuthAction', async () => {
-      mockAdapter.onGet(ApiUrl.LOGIN).reply(200);
+      mockAdapter.onGet(ApiUrl.Login).reply(200);
 
       await store.dispatch(checkAuthAction());
       const actions = extractActionsTypes(store.getActions());
@@ -38,7 +38,7 @@ describe('Async actions', () => {
     });
 
     it('should dispatch "checkAuthAction.pending" and "checkAuthAction.rejected" when server response 400', async() => {
-      mockAdapter.onGet(ApiUrl.LOGIN).reply(400);
+      mockAdapter.onGet(ApiUrl.Login).reply(400);
 
       await store.dispatch(checkAuthAction());
       const actions = extractActionsTypes(store.getActions());
@@ -53,7 +53,7 @@ describe('Async actions', () => {
   describe('fetchOffersAction', () => {
     it('should dispatch "fetchOffersAction.pending", "fetchOffersAction.fulfilled", when server response 200', async() => {
       const mockOffer = [makeFakeOffer()];
-      mockAdapter.onGet(ApiUrl.GET_OFFERS).reply(200, mockOffer);
+      mockAdapter.onGet(ApiUrl.GetOffers).reply(200, mockOffer);
 
       await store.dispatch(fetchOffersAction());
 
@@ -71,7 +71,7 @@ describe('Async actions', () => {
     });
 
     it('should dispatch "fetchOffersAction.pending", "fetchOffersAction.rejected" when server response 400', async () => {
-      mockAdapter.onGet(ApiUrl.GET_OFFERS).reply(400, []);
+      mockAdapter.onGet(ApiUrl.GetOffers).reply(400, []);
 
       await store.dispatch(fetchOffersAction());
       const actions = extractActionsTypes(store.getActions());
@@ -86,7 +86,7 @@ describe('Async actions', () => {
   describe('fetchFavoritesAction', () => {
     it('should dispatch "fetchFavoritesAction.pending", "fetchFavoritesAction.fulfilled", when server response 200', async() => {
       const mockOffer = makeFakeOffer();
-      mockAdapter.onGet(ApiUrl.FAVORITES).reply(200, mockOffer);
+      mockAdapter.onGet(ApiUrl.Favorites).reply(200, mockOffer);
 
       await store.dispatch(fetchFavoritesAction());
 
@@ -104,7 +104,7 @@ describe('Async actions', () => {
     });
 
     it('should dispatch "fetchFavoritesAction.pending", "fetchFavoritesAction.rejected" when server response 400', async () => {
-      mockAdapter.onGet(ApiUrl.FAVORITES).reply(400, []);
+      mockAdapter.onGet(ApiUrl.Favorites).reply(400, []);
 
       await store.dispatch(fetchFavoritesAction());
       const actions = extractActionsTypes(store.getActions());
@@ -119,7 +119,7 @@ describe('Async actions', () => {
   describe('addFavoritesAction', () => {
     it('should dispatch "addFavoritesAction.pending", "addFavoritesAction.fulfilled", when server response 200', async() => {
       const mockOffer = makeFakeOffer();
-      mockAdapter.onPost(`${ApiUrl.FAVORITES}/${mockOffer.id}/1`).reply(200, mockOffer);
+      mockAdapter.onPost(`${ApiUrl.Favorites}/${mockOffer.id}/1`).reply(200, mockOffer);
 
       await store.dispatch(addFavoritesAction(mockOffer));
 
@@ -138,7 +138,7 @@ describe('Async actions', () => {
 
     it('should dispatch "addFavoritesAction.pending", "addFavoritesAction.rejected" when server response 400', async () => {
       const mockOffer = makeFakeOffer();
-      mockAdapter.onGet(`${ApiUrl.FAVORITES}/${mockOffer.id}/1`).reply(400, []);
+      mockAdapter.onGet(`${ApiUrl.Favorites}/${mockOffer.id}/1`).reply(400, []);
 
       await store.dispatch(addFavoritesAction(mockOffer));
       const actions = extractActionsTypes(store.getActions());
@@ -153,7 +153,7 @@ describe('Async actions', () => {
   describe('removeFavoritesAction', () => {
     it('should dispatch "removeFavoritesAction.pending", "removeFavoritesAction.fulfilled", when server response 200', async() => {
       const mockOffer = makeFakeOffer();
-      mockAdapter.onPost(`${ApiUrl.FAVORITES}/${mockOffer.id}/0`).reply(200, mockOffer);
+      mockAdapter.onPost(`${ApiUrl.Favorites}/${mockOffer.id}/0`).reply(200, mockOffer);
 
       await store.dispatch(removeFavoritesAction(mockOffer));
 
@@ -172,7 +172,7 @@ describe('Async actions', () => {
 
     it('should dispatch "removeFavoritesAction.pending", "removeFavoritesAction.rejected" when server response 400', async () => {
       const mockOffer = makeFakeOffer();
-      mockAdapter.onGet(`${ApiUrl.FAVORITES}/${mockOffer.id}/0`).reply(400, []);
+      mockAdapter.onGet(`${ApiUrl.Favorites}/${mockOffer.id}/0`).reply(400, []);
 
       await store.dispatch(removeFavoritesAction(mockOffer));
       const actions = extractActionsTypes(store.getActions());
@@ -188,7 +188,7 @@ describe('Async actions', () => {
     it('should dispatch "loginAction.pending", "redirectToRoute", "loginAction.fulfilled" when server response 200', async() => {
       const fakeUser: AuthData = { login: 'test@test.ru', password: '123456' };
       const fakeServerReplay = { token: 'secret' };
-      mockAdapter.onPost(ApiUrl.LOGIN).reply(200, fakeServerReplay);
+      mockAdapter.onPost(ApiUrl.Login).reply(200, fakeServerReplay);
 
       await store.dispatch(loginAction(fakeUser));
       const actions = extractActionsTypes(store.getActions());
@@ -204,7 +204,7 @@ describe('Async actions', () => {
     it('should call "saveToken" once with the received token', async () => {
       const fakeUser: AuthData = { login: 'test@test.ru', password: '123456' };
       const fakeServerReplay = { token: 'secret' };
-      mockAdapter.onPost(ApiUrl.LOGIN).reply(200, fakeServerReplay);
+      mockAdapter.onPost(ApiUrl.Login).reply(200, fakeServerReplay);
       const mockSaveToken = vi.spyOn(tokenStorage, 'saveToken');
 
       await store.dispatch(loginAction(fakeUser));
@@ -217,7 +217,7 @@ describe('Async actions', () => {
 
   describe('logoutAction', () => {
     it('should dispatch "logoutAction.pending", "logoutAction.fulfilled" when server response 204', async() => {
-      mockAdapter.onDelete(ApiUrl.LOGOUT).reply(204);
+      mockAdapter.onDelete(ApiUrl.Logout).reply(204);
 
       await store.dispatch(logoutAction());
       const actions = extractActionsTypes(store.getActions());
@@ -229,7 +229,7 @@ describe('Async actions', () => {
     });
 
     it('should one call "dropToken" with "logoutAction"', async () => {
-      mockAdapter.onDelete(ApiUrl.LOGOUT).reply(204);
+      mockAdapter.onDelete(ApiUrl.Logout).reply(204);
       const mockDropToken = vi.spyOn(tokenStorage, 'dropToken');
 
       await store.dispatch(logoutAction());

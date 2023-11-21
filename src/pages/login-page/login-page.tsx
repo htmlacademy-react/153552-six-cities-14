@@ -3,15 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks';
-import { AppRoute } from '../../const';
+import { AppRoute, CityName } from '../../const';
+import { getRandomCity } from '../../utils';
 import { loginAction } from '../../store/api-actions';
 import { getAuthorizationStatus } from '../../store/autorization-status-data/selectors';
 import { AuthStatus } from '../../const';
+import { updateCity } from '../../store/city-data/city-data';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const [isValid, setIsValid] = useState<boolean>(false);
+  const [activeCity, setActiveCity] = useState<CityName | null>(null);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -44,6 +47,15 @@ function LoginPage(): JSX.Element {
     setIsValid(isValidForm);
   };
 
+  const handleCityClick = (evt: React.MouseEvent) => {
+    evt.preventDefault();
+
+    if (activeCity) {
+      dispatch(updateCity(activeCity));
+      navigate(AppRoute.Main);
+    }
+  };
+
   useEffect(() => {
     if (authorizationStatus === AuthStatus.Auth) {
       navigate(AppRoute.Main);
@@ -54,6 +66,7 @@ function LoginPage(): JSX.Element {
     if (loginRef.current?.value && passwordRef.current?.value) {
       checkIsValid();
     }
+    setActiveCity(getRandomCity());
   }, []);
 
   return (
@@ -118,8 +131,13 @@ function LoginPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
+              <a
+                className="locations__item-link"
+                onClick={(evt) => {
+                  handleCityClick(evt);
+                }}
+              >
+                <span>{activeCity}</span>
               </a>
             </div>
           </section>

@@ -1,6 +1,6 @@
 import browserHistory from '../../browser-history';
 import { MockStore, configureMockStore } from '@jedmao/redux-mock-store';
-import { redirect } from './redirect';
+import { redirect } from './middleware';
 import { redirectToRoute } from '../actions';
 import { AppRoute } from '../../const';
 

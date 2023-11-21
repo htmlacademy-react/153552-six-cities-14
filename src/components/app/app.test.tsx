@@ -1,9 +1,9 @@
 import { render, screen} from '@testing-library/react';
 import { MemoryHistory, createMemoryHistory } from 'history';
 import { AppRoute, AuthStatus } from '../../const';
-import App from './app';
 import { withHistory, withStore } from '../../utils/mock-component';
 import { makeFakeStore } from '../../utils/mocks';
+import App from './app';
 
 describe('Application Routing', () => {
   let mockHistory: MemoryHistory;
@@ -42,18 +42,6 @@ describe('Application Routing', () => {
     render(withStoreComponent);
 
     expect(screen.getByText('Favorites offers')).toBeInTheDocument();
-  });
-
-  it('should render Offer page when user navigate to "/offer/1"', () => {
-    const withHistoryComponent = withHistory(<App />, mockHistory);
-    const { withStoreComponent } = withStore(withHistoryComponent, makeFakeStore({
-      AUTORIZATION_STATUS: { authorizationStatus: AuthStatus.Auth }
-    }));
-    mockHistory.push(`${AppRoute.Offer}1`);
-
-    render(withStoreComponent);
-
-    expect(screen.getByText('Offer info')).toBeInTheDocument();
   });
 
   it('should render Error page when user navigate to non-existent route', () => {

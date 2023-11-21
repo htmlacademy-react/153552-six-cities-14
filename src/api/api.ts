@@ -1,17 +1,12 @@
-import axios, { AxiosInstance, AxiosError } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { ApiUrl } from './urls';
-import { getToken } from '../services/token';
-
-type DetailMessageType = {
-  type: string;
-  message: string;
-}
+import { getToken } from '../token/token';
 
 const REQUEST_TIMEOUT = 5000;
 
-export const createAPI = (): AxiosInstance => {
+export const createApi = (): AxiosInstance => {
   const api = axios.create({
-    baseURL: ApiUrl.BASE,
+    baseURL: ApiUrl.Base,
     timeout: REQUEST_TIMEOUT,
   });
 
@@ -29,7 +24,7 @@ export const createAPI = (): AxiosInstance => {
 
   api.interceptors.response.use(
     (response) => response,
-    (error: AxiosError<DetailMessageType>) => {
+    (error) => {
       throw error;
     }
   );

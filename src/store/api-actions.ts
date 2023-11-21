@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State, UserInfo } from '../types/state';
 import { Offer, AuthData } from '../types';
 import { ApiUrl } from '../api/urls';
-import { saveToken, dropToken } from '../services/token';
+import { saveToken, dropToken } from '../token/token';
 import { redirectToRoute } from './actions';
 import { AppRoute } from '../const';
 import { updateUserInfo } from './user-data/user-data';
@@ -15,7 +15,7 @@ export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
 }>(
   'offers/fetchOffers',
   async (_arg, {extra: api}) => {
-    const { data } = await api.get<Offer[]>(ApiUrl.GET_OFFERS);
+    const { data } = await api.get<Offer[]>(ApiUrl.GetOffers);
     return data;
   },
 );
@@ -27,7 +27,7 @@ export const fetchFavoritesAction = createAsyncThunk<Offer[], undefined, {
 }>(
   'favorites/fetchFavorites',
   async (_arg, {extra: api}) => {
-    const { data } = await api.get<Offer[]>(ApiUrl.FAVORITES);
+    const { data } = await api.get<Offer[]>(ApiUrl.Favorites);
     return data;
   },
 );
@@ -39,7 +39,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
 }>(
   'user/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
-    const { data } = await api.get<UserInfo | null>(ApiUrl.LOGIN);
+    const { data } = await api.get<UserInfo | null>(ApiUrl.Login);
     if (data) {
       dispatch(updateUserInfo(data));
       dispatch(fetchFavoritesAction());
@@ -54,7 +54,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    const {data} = await api.post<UserInfo>(ApiUrl.LOGIN, {email, password});
+    const {data} = await api.post<UserInfo>(ApiUrl.Login, {email, password});
     if (data) {
       saveToken(data.token);
       dispatch(redirectToRoute(AppRoute.Favorites));
@@ -70,7 +70,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
 }>(
   'user/logout',
   async (_arg, {extra: api}) => {
-    await api.delete(ApiUrl.LOGOUT);
+    await api.delete(ApiUrl.Logout);
     dropToken();
   },
 );
@@ -83,7 +83,7 @@ export const addFavoritesAction = createAsyncThunk<Offer, Offer, {
   'favorites/addFavorites',
   async (favoriteOffer, {extra: api}) => {
     const { id } = favoriteOffer;
-    const { data } = await api.post<Offer>(`${ApiUrl.FAVORITES}/${id}/1`);
+    const { data } = await api.post<Offer>(`${ApiUrl.Favorites}/${id}/1`);
     return data;
   },
 );
@@ -96,7 +96,7 @@ export const removeFavoritesAction = createAsyncThunk<Offer, Offer, {
   'favorites/removeFavorites',
   async (favoriteOffer, {extra: api}) => {
     const { id } = favoriteOffer;
-    const { data } = await api.post<Offer>(`${ApiUrl.FAVORITES}/${id}/0`);
+    const { data } = await api.post<Offer>(`${ApiUrl.Favorites}/${id}/0`);
     return data;
   },
 );
