@@ -1,6 +1,6 @@
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { MarkerUrl } from '../../const';
 import { Offer, City } from '../../types';
 import useMap from '../../hooks/useMap';
@@ -32,9 +32,9 @@ export default function Map({ offers, activeOffer, hoveredOffer, isOfferPage, ty
   const place: City = {
     name: firstOffer.title,
     location: {
-      latitude: firstOffer.location.latitude,
-      longitude: firstOffer.location.longitude,
-      zoom: firstOffer.location.zoom,
+      latitude: firstOffer.city.location.latitude,
+      longitude: firstOffer.city.location.longitude,
+      zoom: firstOffer.city.location.zoom,
     }
   };
 
@@ -42,6 +42,7 @@ export default function Map({ offers, activeOffer, hoveredOffer, isOfferPage, ty
   const map = useMap(mapRef, place);
 
   const currentIconType = isActiveOfferOrange ? currentCustomIcon : defaultCustomIcon;
+  const city = useMemo(() => offers[0].city.name, [offers]);
 
   useEffect(() => {
     if (map) {
@@ -55,9 +56,15 @@ export default function Map({ offers, activeOffer, hoveredOffer, isOfferPage, ty
           .addTo(map);
       });
 
-      map.setView([activeOffer.location.latitude, activeOffer.location.longitude], 13);
     }
   }, [map, offers, activeOffer, isOfferPage, hoveredOffer, currentIconType]);
+
+
+  useEffect(() => {
+    if (map) {
+      map.setView([activeOffer.city.location.latitude, activeOffer.city.location.longitude], activeOffer.city.location.zoom);
+    }
+  }, [city]);
 
   return (
     <section data-testid="map__id" ref={mapRef} className={`map ${type === 'city' ? 'cities__map' : 'offer__map'}`}>

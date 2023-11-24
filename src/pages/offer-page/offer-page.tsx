@@ -37,14 +37,18 @@ function OfferPage(): JSX.Element {
 
   const fetchComments = async() => {
     setIsOfferLoading(true);
+
     const { data } = await api.get<Comment[]>(`${ApiUrl.GetComments}/${id}`);
+
     setComments(data);
     setIsOfferLoading(false);
   };
 
   const fetchOffersNearby = async() => {
     setIsOfferLoading(true);
+
     const { data } = await api.get<Offer[]>(`${ApiUrl.GetOffers}/${id}/nearby`);
+
     setOffersNearby(data);
     setIsOfferLoading(false);
   };
@@ -52,6 +56,7 @@ function OfferPage(): JSX.Element {
   const fetchOffer = async() => {
     try {
       const res = await api.get<Offer>(`${ApiUrl.GetOffers}/${id}`);
+
       setOffer(res.data);
       fetchComments();
       fetchOffersNearby();
@@ -125,7 +130,7 @@ function OfferPage(): JSX.Element {
                   {offer.title}
                 </h1>
                 <button
-                  className={`offer__bookmark-button button ${offer.isFavorite ? 'offer__bookmark-button--active' : ''}`}
+                  className={`offer__bookmark-button button ${offer.isFavorite && authorizationStatus === AuthStatus.Auth ? 'offer__bookmark-button--active' : ''}`}
                   type="button"
                   onClick={ () => {
                     toggleFavorite(offer);
@@ -179,7 +184,7 @@ function OfferPage(): JSX.Element {
                 }
                 {comments.length > 0 && <CommentsList comments={comments} />}
                 {authorizationStatus === AuthStatus.Auth &&
-                  <CommentForm isBlocked={isFormBlocked} sendComment={sendComment} />}
+                  <CommentForm isBlocked={isFormBlocked} onCommentSend={sendComment} />}
               </section>
             </div>
           </div>

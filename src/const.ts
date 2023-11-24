@@ -1,3 +1,5 @@
+import { Review } from './types';
+
 export enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -42,5 +44,13 @@ export enum SortingOption {
   TopRatedFirst = 'Top rated first',
 }
 
+export const EMPTY_REVIEW: Review = {
+  rating: 0,
+  comment: '',
+};
+
 export const ERROR_STATUS_CODE = 404;
 export const ERROR_ROUTE = '404';
+export const REVIEW_MIN_LENGTH = 50;
+export const REVIEW_MAX_LENGTH = 300;
+export const COMMENTS_MAX_QUANTITY = 10;
