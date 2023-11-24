@@ -1,5 +1,5 @@
 import { favoritesData } from './favorites-data';
-import { fetchFavoritesAction, addFavoritesAction, removeFavoritesAction } from '../api-actions';
+import { fetchFavoritesAction, addFavoritesAction } from '../api-actions';
 import { FavoritesData } from '../../types/state';
 import { makeFakeOffer } from '../../utils/mocks';
 
