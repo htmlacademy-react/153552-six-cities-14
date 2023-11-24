@@ -1,21 +1,17 @@
 import { useState, useMemo, useRef } from 'react';
 import { ChangeEvent } from 'react';
 import { Review } from '../../types';
+import { EMPTY_REVIEW, REVIEW_MIN_LENGTH, REVIEW_MAX_LENGTH } from '../../const';
 
 type CommentFormProps = {
   isBlocked?: boolean;
-  sendComment: (review: Review) => Promise<void>;
+  onCommentSend: (review: Review) => Promise<void>;
 }
 
-export default function CommentForm({ isBlocked, sendComment }: CommentFormProps): JSX.Element {
+export default function CommentForm({ isBlocked, onCommentSend }: CommentFormProps): JSX.Element {
   const formRef = useRef<HTMLFormElement | null>(null);
 
-  const emptyReview: Review = {
-    rating: 0,
-    comment: '',
-  };
-
-  const [formData, setFormData] = useState(emptyReview);
+  const [formData, setFormData] = useState(EMPTY_REVIEW);
 
   const handleFieldChange = (evt: React.ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = evt.target;
@@ -25,8 +21,8 @@ export default function CommentForm({ isBlocked, sendComment }: CommentFormProps
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    sendComment(formData);
-    setFormData(emptyReview);
+    onCommentSend(formData);
+    setFormData(EMPTY_REVIEW);
 
     const ratingElement = document.getElementById(`${formData.rating}-star${formData.rating > 1 ? 's' : ''}`) as HTMLInputElement;
 
@@ -36,7 +32,7 @@ export default function CommentForm({ isBlocked, sendComment }: CommentFormProps
   };
 
   const isFormValid = useMemo(
-    () => formData.rating > 0 && formData.comment.length >= 50 && formData.comment.length <= 300,
+    () => formData.rating > 0 && formData.comment.length >= REVIEW_MIN_LENGTH && formData.comment.length <= REVIEW_MAX_LENGTH,
     [formData]);
 
   return (
