@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Comment } from '../../types';
+import { COMMENTS_MAX_QUANTITY } from '../../const';
 import CommentItem from '../comment-item/comment-item';
 
 type CommentsListProps = {
@@ -10,7 +11,7 @@ export default function CommentsList({ comments }: CommentsListProps): JSX.Eleme
   const computedComments = useMemo(() => {
     const sortedComments = comments.sort((a: Comment, b: Comment) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
 
-    return sortedComments.slice(0, 10);
+    return sortedComments.slice(0, COMMENTS_MAX_QUANTITY);
   }, [comments]);
 
   return (
