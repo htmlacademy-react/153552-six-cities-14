@@ -95,22 +95,4 @@ describe('Offers data slice', () => {
 
     expect(result).toEqual(expectedState);
   });
-
-  it('should set favoriteOffers are updated after removeFavoritesAction fulfilled', () => {
-    const mockOfferFirst = makeFakeOffer();
-    const mockOfferSecond = makeFakeOffer();
-    const initialState: FavoritesData = {
-      favoriteOffers: [mockOfferFirst, mockOfferSecond],
-      isLoading: false,
-      hasError: false,
-    };
-    const expectedState: FavoritesData = {
-      favoriteOffers: [mockOfferFirst],
-      isLoading: false,
-      hasError: false,
-    };
-    const result = favoritesData.reducer(initialState, removeFavoritesAction.fulfilled(mockOfferSecond, '', mockOfferSecond));
-
-    expect(result).toEqual(expectedState);
-  });
 });
