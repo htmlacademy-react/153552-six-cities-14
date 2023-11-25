@@ -46,6 +46,12 @@ export default function Map({ offers, activeOffer, hoveredOffer, isOfferPage, ty
 
   useEffect(() => {
     if (map) {
+      map.eachLayer((layer: leaflet.Layer & { _icon?: unknown}) => {
+        if(layer._icon) {
+          layer.remove();
+        }
+      });
+
       offers.forEach((offer) => {
         leaflet.marker({
           lat: offer.location.latitude,

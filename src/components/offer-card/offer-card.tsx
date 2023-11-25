@@ -6,6 +6,7 @@ import { getRating } from '../../utils';
 import { useSelector } from 'react-redux';
 import { getAuthorizationStatus } from '../../store/autorization-status-data/selectors';
 import { addFavoritesAction, removeFavoritesAction } from '../../store/api-actions';
+import { updateOffers } from '../../store/offers-data/offers-data';
 
 type OfferCardProps = {
   offer: Offer;
@@ -43,11 +44,8 @@ function OfferCard({ offer, cardType, updateActiveOffer, clearHoveredOffer, togg
     }
 
     const { isFavorite } = favoriteOffer;
-    if (isFavorite) {
-      await dispatch(removeFavoritesAction(favoriteOffer));
-    } else {
-      await dispatch(addFavoritesAction(favoriteOffer));
-    }
+    const { payload } = isFavorite ? await dispatch(removeFavoritesAction(favoriteOffer)) : await dispatch(addFavoritesAction(favoriteOffer));
+    dispatch(updateOffers(payload as Offer));
     toggleFavoriteOffer();
   };
 
@@ -90,7 +88,7 @@ function OfferCard({ offer, cardType, updateActiveOffer, clearHoveredOffer, togg
           </div>
           <button
             type="button"
-            className={`place-card__bookmark-button button ${offer.isFavorite ? 'place-card__bookmark-button--active' : ''}`}
+            className={`place-card__bookmark-button button ${offer.isFavorite && authorizationStatus === AuthStatus.Auth ? 'place-card__bookmark-button--active' : ''}`}
             onClick={ () => {
               toggleFavorite(offer);
             } }
