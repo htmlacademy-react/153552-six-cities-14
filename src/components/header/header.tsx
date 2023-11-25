@@ -7,6 +7,7 @@ import { getAuthorizationStatus } from '../../store/autorization-status-data/sel
 import { getUserInfo } from '../../store/user-data/selectors';
 import { getFavorites } from '../../store/favotites-data/selectors';
 import { updateUserInfo } from '../../store/user-data/user-data';
+import { updateFavoriteOffers } from '../../store/favotites-data/favorites-data';
 
 export default function Header(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
@@ -18,6 +19,7 @@ export default function Header(): JSX.Element {
   const handleLogout = () => {
     dispatch(logoutAction());
     dispatch(updateUserInfo(null));
+    dispatch(updateFavoriteOffers([]));
   };
 
   return (

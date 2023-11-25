@@ -5,8 +5,6 @@ import { Offer } from '../../types';
 import { cities, SortingOption, CityName } from '../../const';
 import { getOffers, getOffersDataLoadingStatus } from '../../store/offers-data/selectors';
 import { getCity } from '../../store/city-data/selectors';
-import { useAppDispatch } from '../../hooks';
-import { fetchOffersAction } from '../../store/api-actions';
 import Header from '../../components/header/header';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import Sorting from '../../components/sorting/sorting';
@@ -15,8 +13,6 @@ import Map from '../../components/map/map';
 import Spinner from '../../components/spinner/spinner';
 
 function HomePage(): JSX.Element {
-  const dispatch = useAppDispatch();
-
   const offers = useSelector(getOffers);
   const offersDataLoadingStatus = useSelector(getOffersDataLoadingStatus);
   const activeCity = useSelector(getCity);
@@ -68,10 +64,6 @@ function HomePage(): JSX.Element {
 
   const clearHoveredOffer = () => setHoveredOffer(null);
 
-  const updateOffers = () => {
-    dispatch(fetchOffersAction());
-  };
-
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -97,7 +89,6 @@ function HomePage(): JSX.Element {
                     cardType="city"
                     handleActiveOffer={updateActiveOffer}
                     removeHoveredOffer={clearHoveredOffer}
-                    handleFavoriteToggling={updateOffers}
                   />
                 </section>
                 <div className="cities__right-section">

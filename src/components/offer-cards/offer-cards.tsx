@@ -7,7 +7,7 @@ export type OfferCardsProps = {
   cardType: string;
   handleActiveOffer?: (offer: Offer) => void;
   removeHoveredOffer?: () => void;
-  handleFavoriteToggling: () => void | Promise<void>;
+  handleFavoriteToggling?: () => void | Promise<void>;
 }
 
 function OfferCards({ offers, cardType, handleActiveOffer, removeHoveredOffer, handleFavoriteToggling }: OfferCardsProps): JSX.Element {
@@ -28,7 +28,9 @@ function OfferCards({ offers, cardType, handleActiveOffer, removeHoveredOffer, h
   };
 
   const toggleFavoriteOffer = () => {
-    handleFavoriteToggling();
+    if (handleFavoriteToggling) {
+      handleFavoriteToggling();
+    }
   };
 
   return (

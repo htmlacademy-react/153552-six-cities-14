@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { FavoritesData } from '../../types/state';
+import { Offer } from '../../types';
 import { fetchFavoritesAction, addFavoritesAction, removeFavoritesAction } from '../api-actions';
 
 export const initialState: FavoritesData = {
@@ -12,7 +13,11 @@ export const initialState: FavoritesData = {
 export const favoritesData = createSlice({
   name: NameSpace.Favorites,
   initialState,
-  reducers: {},
+  reducers: {
+    updateFavoriteOffers: (state, action: PayloadAction<Offer[]>) => {
+      state.favoriteOffers = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchFavoritesAction.pending, (state) => {
@@ -45,3 +50,5 @@ export const favoritesData = createSlice({
       });
   }
 });
+
+export const { updateFavoriteOffers } = favoritesData.actions;

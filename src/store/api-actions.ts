@@ -84,6 +84,7 @@ export const addFavoritesAction = createAsyncThunk<Offer, Offer, {
   async (favoriteOffer, {extra: api}) => {
     const { id } = favoriteOffer;
     const { data } = await api.post<Offer>(`${ApiUrl.Favorites}/${id}/1`);
+
     return data;
   },
 );
