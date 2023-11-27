@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { getAuthorizationStatus } from '../../store/autorization-status-data/selectors';
 import { addFavoritesAction, removeFavoritesAction } from '../../store/api-actions';
 import { updateOffers } from '../../store/offers-data/offers-data';
+import { capitalizeFirstLetter } from '../../utils';
 
 type OfferCardProps = {
   offer: Offer;
@@ -108,7 +109,7 @@ function OfferCard({ offer, cardType, updateActiveOffer, clearHoveredOffer, togg
         <h2 className="place-card__name">
           <Link to={getLinkToOffer(offer.id)}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{capitalizeFirstLetter(offer.type)}</p>
       </div>
     </article>
   );

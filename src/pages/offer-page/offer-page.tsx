@@ -31,6 +31,7 @@ function OfferPage(): JSX.Element {
   const [offersNearby, setOffersNearby] = useState<Offer[]>([]);
   const [isFormBlocked, setIsFormBlocked] = useState<boolean>(false);
   const [isOfferLoading, setIsOfferLoading] = useState<boolean>(false);
+  const [isCommentSent, setIsCommentSent] = useState<boolean>(false);
   const navigate = useNavigate();
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const api = createApi();
@@ -53,13 +54,15 @@ function OfferPage(): JSX.Element {
     setIsOfferLoading(false);
   };
 
-  const fetchOffer = async() => {
+  const fetchOffer = async(isFullOfferInfoLoading?: boolean) => {
     try {
       const res = await api.get<Offer>(`${ApiUrl.GetOffers}/${id}`);
 
       setOffer(res.data);
-      fetchComments();
-      fetchOffersNearby();
+      if (isFullOfferInfoLoading) {
+        fetchComments();
+        fetchOffersNearby();
+      }
     } catch (error: unknown) {
       if (error instanceof AxiosError && error?.response?.status === ERROR_STATUS_CODE) {
         navigate(ERROR_ROUTE);
@@ -68,7 +71,7 @@ function OfferPage(): JSX.Element {
   };
 
   useEffect(() => {
-    fetchOffer();
+    fetchOffer(true);
     window.scrollTo(0, 0);
   }, [id]);
 
@@ -80,6 +83,8 @@ function OfferPage(): JSX.Element {
           setComments(data.data);
           setIsFormBlocked(false);
         });
+      setIsCommentSent(true);
+      fetchComments();
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         const errorText: string = error?.message;
@@ -184,7 +189,7 @@ function OfferPage(): JSX.Element {
                 }
                 {comments.length > 0 && <CommentsList comments={comments} />}
                 {authorizationStatus === AuthStatus.Auth &&
-                  <CommentForm isBlocked={isFormBlocked} onCommentSend={sendComment} />}
+                  <CommentForm isBlocked={isFormBlocked} isCommentSent={isCommentSent} onCommentSend={sendComment} />}
               </section>
             </div>
           </div>
@@ -193,7 +198,7 @@ function OfferPage(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            {offersNearby && <OfferCards offers={offersNearby} cardType="near-places" handleFavoriteToggling={fetchOffer}/> }
+            {offersNearby && <OfferCards offers={offersNearby} cardType="near-places" handleFavoriteToggling={fetchOffersNearby}/> }
           </section>
         </div>
       </main>}
