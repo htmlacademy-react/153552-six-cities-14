@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { createApi } from '../../api/api';
 import { Comment, Offer, Review } from '../../types';
 import { ApiUrl } from '../../api/urls';
-import { AppRoute } from '../../const';
+import { AppRoute, OFFERS_NEARBY_MAX_QUANTITY } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { addFavoritesAction, removeFavoritesAction } from '../../store/api-actions';
 import { getRating, capitalizeFirstLetter } from '../../utils';
@@ -31,6 +31,9 @@ function OfferPage(): JSX.Element {
   const [offersNearby, setOffersNearby] = useState<Offer[]>([]);
   const [isFormBlocked, setIsFormBlocked] = useState<boolean>(false);
   const [isOfferLoading, setIsOfferLoading] = useState<boolean>(false);
+  const [isCommentSent, setIsCommentSent] = useState<boolean>(false);
+  const [isCommentSendingMistake, setIsCommentSendingMistake] = useState<boolean>(false);
+
   const navigate = useNavigate();
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const api = createApi();
@@ -49,17 +52,19 @@ function OfferPage(): JSX.Element {
 
     const { data } = await api.get<Offer[]>(`${ApiUrl.GetOffers}/${id}/nearby`);
 
-    setOffersNearby(data);
+    setOffersNearby(data.slice(0, OFFERS_NEARBY_MAX_QUANTITY));
     setIsOfferLoading(false);
   };
 
-  const fetchOffer = async() => {
+  const fetchOffer = async(isFullOfferInfoLoading?: boolean) => {
     try {
       const res = await api.get<Offer>(`${ApiUrl.GetOffers}/${id}`);
 
       setOffer(res.data);
-      fetchComments();
-      fetchOffersNearby();
+      if (isFullOfferInfoLoading) {
+        fetchComments();
+        fetchOffersNearby();
+      }
     } catch (error: unknown) {
       if (error instanceof AxiosError && error?.response?.status === ERROR_STATUS_CODE) {
         navigate(ERROR_ROUTE);
@@ -68,18 +73,22 @@ function OfferPage(): JSX.Element {
   };
 
   useEffect(() => {
-    fetchOffer();
+    fetchOffer(true);
     window.scrollTo(0, 0);
   }, [id]);
 
   const sendComment = async (comment: Review) => {
     setIsFormBlocked(true);
+    setIsCommentSent(false);
+    setIsCommentSendingMistake(false);
     try {
       await api.post<Comment[]>(`${ApiUrl.GetComments}/${id}`, comment)
         .then((data) => {
           setComments(data.data);
           setIsFormBlocked(false);
         });
+      setIsCommentSent(true);
+      fetchComments();
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         const errorText: string = error?.message;
@@ -88,6 +97,7 @@ function OfferPage(): JSX.Element {
         }
       }
       setIsFormBlocked(false);
+      setIsCommentSendingMistake(true);
     }
   };
 
@@ -184,7 +194,7 @@ function OfferPage(): JSX.Element {
                 }
                 {comments.length > 0 && <CommentsList comments={comments} />}
                 {authorizationStatus === AuthStatus.Auth &&
-                  <CommentForm isBlocked={isFormBlocked} onCommentSend={sendComment} />}
+                  <CommentForm isBlocked={isFormBlocked} isCommentSent={isCommentSent} onCommentSend={sendComment} isCommentSendingMistake={isCommentSendingMistake} />}
               </section>
             </div>
           </div>
@@ -193,7 +203,7 @@ function OfferPage(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            {offersNearby && <OfferCards offers={offersNearby} cardType="near-places" handleFavoriteToggling={fetchOffer}/> }
+            {offersNearby && <OfferCards offers={offersNearby} cardType="near-places" onHandleFavoriteToggling={fetchOffersNearby}/> }
           </section>
         </div>
       </main>}

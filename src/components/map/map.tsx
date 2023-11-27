@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import { useRef, useEffect, useMemo } from 'react';
 import { MarkerUrl } from '../../const';
 import { Offer, City } from '../../types';
-import useMap from '../../hooks/useMap';
+import useMap from '../../hooks/use-map';
 
 export type MapProps = {
   offers: Offer[];

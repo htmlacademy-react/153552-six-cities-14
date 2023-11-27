@@ -6,7 +6,7 @@ import { Offer } from '../../types';
 import { useAppDispatch } from '../../hooks';
 import { AppRoute } from '../../const';
 import { fetchFavoritesAction } from '../../store/api-actions';
-import { getFavorites } from '../../store/favotites-data/selectors';
+import { getFavorites } from '../../store/favorites-data/selectors';
 import Header from '../../components/header/header';
 import OfferCards from '../../components/offer-cards/offer-cards';
 
@@ -62,7 +62,7 @@ function FavoritesPage(): JSX.Element {
                         </div>
                       </div>
                       <div className="favorites__places">
-                        <OfferCards offers={computedFavoriteOffers[city]} cardType="favorite" handleFavoriteToggling={updateFavorites} />
+                        <OfferCards offers={computedFavoriteOffers[city]} cardType="favorite" onHandleFavoriteToggling={updateFavorites} />
                       </div>
                     </li>
                   ))}

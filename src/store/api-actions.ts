@@ -59,6 +59,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
       saveToken(data.token);
       dispatch(redirectToRoute(AppRoute.Favorites));
       dispatch(updateUserInfo(data));
+      dispatch(fetchFavoritesAction());
     }
   },
 );

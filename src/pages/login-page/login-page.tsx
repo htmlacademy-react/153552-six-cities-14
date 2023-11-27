@@ -33,10 +33,10 @@ function LoginPage(): JSX.Element {
   };
 
   const checkIsValid = () => {
-    const login = loginRef.current?.value.trim();
-    const password = passwordRef.current?.value.trim();
+    const login = loginRef.current?.value;
+    const password = passwordRef.current?.value;
 
-    if(!password || !login) {
+    if(!password || !login || /\s/g.test(password)) {
       setIsValid(false);
       return;
     }
