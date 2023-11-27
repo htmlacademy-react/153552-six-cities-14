@@ -1,0 +1,60 @@
+.is-clickable {
+  cursor: pointer;
+}
+
+.places__sorting-type {
+  margin-left: 0.5rem;
+}
+
+.header__avatar-wrapper {
+  border-radius: 50%;
+}
+
+.place-card__image {
+  width: 260px;
+  height: 200px;
+}
+
+.favorites__image {
+  width: 150px;
+  height: 110px;
+}
+
+.spinner-wrapper {
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner-inner {
+  text-align: center;
+}
+
+.spinner-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4481c3;
+}
+
+.form__rating--blocked {
+  pointer-events: none;
+}
+
+.form__rating--blocked {
+  filter: grayscale(1);
+  cursor: default;
+}
+
+.reviews__submit--blocked {
+  cursor: default;
+}
+
+.reviews__textarea:disabled {
+  color: #c7c7c7;
+}
