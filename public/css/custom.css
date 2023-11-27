@@ -42,14 +42,19 @@
   color: #4481c3;
 }
 
-/* .form__rating--blocked .form__rating-input:checked~.form__rating-label .form__star-image, 
-.form__rating--blocked .form__rating-input:focus~.form__rating-label .form__star-image, 
-.form__rating--blocked .form__rating-label:hover .form__star-image, 
-.form__rating--blocked .form__rating-label:hover~.form__rating-label .form__star-image {
-  fill: #c7c7c7;
+.form__rating--blocked {
+  pointer-events: none;
+}
+
+.form__rating--blocked {
+  filter: grayscale(1);
   cursor: default;
-} */
+}
 
 .reviews__submit--blocked {
   cursor: default;
+}
+
+.reviews__textarea:disabled {
+  color: #c7c7c7;
 }

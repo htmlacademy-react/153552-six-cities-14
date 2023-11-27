@@ -12,29 +12,29 @@ import { capitalizeFirstLetter } from '../../utils';
 type OfferCardProps = {
   offer: Offer;
   cardType?: string;
-  updateActiveOffer?: (offer: Offer) => void;
-  clearHoveredOffer?: () => void;
-  toggleFavoriteOffer: () => void;
+  onUpdateActiveOffer?: (offer: Offer) => void;
+  onClearHoveredOffer?: () => void;
+  onToggleFavoriteOffer: () => void;
 }
 
 function getLinkToOffer(id: number) {
   return `${AppRoute.Offer}${id}`;
 }
 
-function OfferCard({ offer, cardType, updateActiveOffer, clearHoveredOffer, toggleFavoriteOffer }: OfferCardProps): JSX.Element {
+function OfferCard({ offer, cardType, onUpdateActiveOffer, onClearHoveredOffer, onToggleFavoriteOffer }: OfferCardProps): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const authorizationStatus = useSelector(getAuthorizationStatus);
 
   function handleMouseHover(): void {
-    if(updateActiveOffer) {
-      updateActiveOffer(offer);
+    if(onUpdateActiveOffer) {
+      onUpdateActiveOffer(offer);
     }
   }
 
   function handleMouseOut(): void {
-    if(clearHoveredOffer) {
-      clearHoveredOffer();
+    if(onClearHoveredOffer) {
+      onClearHoveredOffer();
     }
   }
 
@@ -47,7 +47,7 @@ function OfferCard({ offer, cardType, updateActiveOffer, clearHoveredOffer, togg
     const { isFavorite } = favoriteOffer;
     const { payload } = isFavorite ? await dispatch(removeFavoritesAction(favoriteOffer)) : await dispatch(addFavoritesAction(favoriteOffer));
     dispatch(updateOffers(payload as Offer));
-    toggleFavoriteOffer();
+    onToggleFavoriteOffer();
   };
 
   return (

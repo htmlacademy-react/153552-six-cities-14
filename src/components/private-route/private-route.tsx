@@ -13,9 +13,9 @@ export default function PrivateRoute(props: PrivateRouteProps): JSX.Element {
 
   return (
     <>
-    {authorizationStatus === AuthStatus.Unknown && <Spinner></Spinner>}
-    {authorizationStatus === AuthStatus.Auth && children}
-    {authorizationStatus === AuthStatus.NoAuth && <Navigate to={AppRoute.Login}></Navigate>}
+      {authorizationStatus === AuthStatus.Unknown && <Spinner></Spinner>}
+      {authorizationStatus === AuthStatus.Auth && children}
+      {authorizationStatus === AuthStatus.NoAuth && <Navigate to={AppRoute.Login}></Navigate>}
     </>
   );
 }
