@@ -5,8 +5,8 @@ import { EMPTY_REVIEW, COMMENT_MIN_LENGTH, COMMENT_MAX_LENGTH } from '../../cons
 
 type CommentFormProps = {
   isBlocked?: boolean;
-  isCommentSent: boolean;
-  isCommentSendingMistake: boolean;
+  isCommentSent?: boolean;
+  isCommentSendingMistake?: boolean;
   onCommentSend: (review: Review) => Promise<void>;
 }
 
