@@ -197,6 +197,7 @@ describe('Async actions', () => {
         loginAction.pending.type,
         redirectToRoute.type,
         updateUserInfo.type,
+        fetchFavoritesAction.pending.type,
         loginAction.fulfilled.type,
       ]);
     });

@@ -5,31 +5,31 @@ import OfferCard from '../../components/offer-card/offer-card';
 export type OfferCardsProps = {
   offers: Offer[];
   cardType: string;
-  handleActiveOffer?: (offer: Offer) => void;
-  removeHoveredOffer?: () => void;
-  handleFavoriteToggling?: () => void | Promise<void>;
+  onHandleActiveOffer?: (offer: Offer) => void;
+  onRemoveHoveredOffer?: () => void;
+  onHandleFavoriteToggling?: () => void | Promise<void>;
 }
 
-function OfferCards({ offers, cardType, handleActiveOffer, removeHoveredOffer, handleFavoriteToggling }: OfferCardsProps): JSX.Element {
+function OfferCards({ offers, cardType, onHandleActiveOffer, onRemoveHoveredOffer, onHandleFavoriteToggling }: OfferCardsProps): JSX.Element {
   const [ , setActiveOffer ] = useState(offers?.[0]);
 
-  const updateActiveOffer = (value: Offer) => {
+  const onUpdateActiveOffer = (value: Offer) => {
     setActiveOffer(value);
 
-    if (handleActiveOffer) {
-      handleActiveOffer(value);
+    if (onHandleActiveOffer) {
+      onHandleActiveOffer(value);
     }
   };
 
-  const clearHoveredOffer = () => {
-    if (removeHoveredOffer) {
-      removeHoveredOffer();
+  const onClearHoveredOffer = () => {
+    if (onRemoveHoveredOffer) {
+      onRemoveHoveredOffer();
     }
   };
 
-  const toggleFavoriteOffer = () => {
-    if (handleFavoriteToggling) {
-      handleFavoriteToggling();
+  const onToggleFavoriteOffer = () => {
+    if (onHandleFavoriteToggling) {
+      onHandleFavoriteToggling();
     }
   };
 
@@ -43,7 +43,7 @@ function OfferCards({ offers, cardType, handleActiveOffer, removeHoveredOffer, h
         ${cardType === 'near-places' ? 'near-places__list places__list' : ''}`
       }
     >
-      {offers.map((offer) => <OfferCard cardType={cardType} offer={offer} key={offer.id} updateActiveOffer={updateActiveOffer} clearHoveredOffer={clearHoveredOffer} toggleFavoriteOffer={toggleFavoriteOffer} />)}
+      {offers.map((offer) => <OfferCard cardType={cardType} offer={offer} key={offer.id} onUpdateActiveOffer={onUpdateActiveOffer} onClearHoveredOffer={onClearHoveredOffer} onToggleFavoriteOffer={onToggleFavoriteOffer} />)}
     </div>
   );
 }

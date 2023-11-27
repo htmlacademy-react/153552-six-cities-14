@@ -7,7 +7,7 @@ describe('Component: OfferCard', () => {
   it('should render correctly', () => {
     const fakeOffer = makeFakeOffer();
     const fakeStore = makeFakeStore({});
-    const { withStoreComponent } = withStore(withHistory(<OfferCard offer={fakeOffer} toggleFavoriteOffer={() => {}} />), fakeStore);
+    const { withStoreComponent } = withStore(withHistory(<OfferCard offer={fakeOffer} onToggleFavoriteOffer={() => {}} />), fakeStore);
     const offerCardId = 'offer__card__id';
 
     render(withStoreComponent);

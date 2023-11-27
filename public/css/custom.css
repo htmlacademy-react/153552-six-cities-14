@@ -41,3 +41,20 @@
   font-weight: 700;
   color: #4481c3;
 }
+
+.form__rating--blocked {
+  pointer-events: none;
+}
+
+.form__rating--blocked {
+  filter: grayscale(1);
+  cursor: default;
+}
+
+.reviews__submit--blocked {
+  cursor: default;
+}
+
+.reviews__textarea:disabled {
+  color: #c7c7c7;
+}

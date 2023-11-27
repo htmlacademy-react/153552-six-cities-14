@@ -1,5 +1,5 @@
 export enum ApiUrl {
-  Base = 'https://14.react.pages.academy/six-cities',
+  Base = 'https://14.design.pages.academy/six-cities',
   GetOffers = `${ApiUrl.Base}/offers`,
   GetComments = `${ApiUrl.Base}/comments`,
   Login = `${ApiUrl.Base}/login`,
